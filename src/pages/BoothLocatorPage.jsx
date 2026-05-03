@@ -3,7 +3,7 @@
  * @module pages/BoothLocatorPage
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { usePageView } from '../hooks/usePageView';
 import { Spinner } from '../components/UI';
 import { loadGoogleMaps, MOCK_BOOTHS } from '../lib/maps';
@@ -23,6 +23,8 @@ const BoothLocatorPage = () => {
 
   // Track page view via custom hook
   usePageView('Booth Locator');
+
+  const booths = useMemo(() => MOCK_BOOTHS, []);
 
   useEffect(() => {
     const init = async () => {
@@ -48,7 +50,7 @@ const BoothLocatorPage = () => {
         trafficLayer.setMap(map);
 
         // Add markers for booths
-        MOCK_BOOTHS.forEach((booth) => {
+        booths.forEach((booth) => {
           new window.google.maps.Marker({
             position: { lat: booth.lat, lng: booth.lng },
             map,

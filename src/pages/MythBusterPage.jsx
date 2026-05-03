@@ -4,10 +4,10 @@
  * @module pages/MythBusterPage
  */
  
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { usePageView } from '../hooks/usePageView';
 import { ELECTION_MYTHS } from '../constants';
- 
+
 /**
  * Component that renders interactive cards to debunk election misinformation.
  * @returns {React.ReactElement} The Myth Buster page.
@@ -19,13 +19,15 @@ const MythBusterPage = () => {
   // Track page view via custom hook
   usePageView('Myth Buster');
 
+  const myths = useMemo(() => ELECTION_MYTHS, []);
+
   /**
    * Toggles the expanded state of a specific myth card.
    * @param {number} index - The index of the card to toggle.
    */
-  const toggle = (index) => {
+  const toggle = useCallback((index) => {
     setExpanded((prev) => ({ ...prev, [index]: !prev[index] }));
-  };
+  }, []);
 
   return (
     <div className="page-container">
@@ -38,7 +40,7 @@ const MythBusterPage = () => {
       </p>
 
       <div className="myths-grid" role="list">
-        {ELECTION_MYTHS.map((item, i) => {
+        {myths.map((item, i) => {
           const isExpanded = !!expanded[i];
 
           return (

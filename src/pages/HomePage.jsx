@@ -4,6 +4,7 @@
  * @module pages/HomePage
  */
 
+import { useMemo } from 'react';
 import { ELECTION_STATS, ELECTION_TIMELINE, VOTER_STEPS } from '../constants';
 import { HeroSection } from '../components/home/HeroSection';
 import { VoterJourney } from '../components/home/VoterJourney';
@@ -16,6 +17,10 @@ import { FeaturesGrid } from '../components/home/FeaturesGrid';
  * @returns {React.ReactElement} The rendered homepage.
  */
 const HomePage = () => {
+  const stats = useMemo(() => ELECTION_STATS, []);
+  const steps = useMemo(() => VOTER_STEPS, []);
+  const timeline = useMemo(() => ELECTION_TIMELINE, []);
+
   return (
     <div className="home-page-container">
       <HeroSection 
@@ -24,7 +29,7 @@ const HomePage = () => {
       />
 
       <div className="stats-row" aria-label="Key Election Statistics">
-        {ELECTION_STATS.map((stat, index) => (
+        {stats.map((stat, index) => (
           <div key={index} className="stat-item">
             <div className="stat-number">{stat.value}</div>
             <div className="stat-label">{stat.label}</div>
@@ -32,9 +37,9 @@ const HomePage = () => {
         ))}
       </div>
 
-      <VoterJourney steps={VOTER_STEPS} />
+      <VoterJourney steps={steps} />
       
-      <TimelineSection timeline={ELECTION_TIMELINE} />
+      <TimelineSection timeline={timeline} />
 
       <FeaturesGrid />
     </div>

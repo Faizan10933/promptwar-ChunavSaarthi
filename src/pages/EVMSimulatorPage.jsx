@@ -4,7 +4,7 @@
  * @module pages/EVMSimulatorPage
  */
 
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { usePageView } from '../hooks/usePageView';
 import { useAudio } from '../hooks/useAudio';
 import { EVM_CANDIDATES, VVPAT_DISPLAY_MS } from '../constants';
@@ -22,12 +22,14 @@ const EVMSimulatorPage = () => {
   // Track page view via custom hook
   usePageView('EVM Simulator');
 
+  const candidates = useMemo(() => EVM_CANDIDATES, []);
+
   /**
    * Handles the voting action when a user clicks the blue EVM button.
    * Plays the audio beep and displays the VVPAT slip temporarily.
    * @param {Object} candidate - The candidate object that received the vote.
    */
-  const handleVote = (candidate) => {
+  const handleVote = useCallback((candidate) => {
     // Prevent double voting
     if (votedFor !== null) return;
 
@@ -42,16 +44,16 @@ const EVMSimulatorPage = () => {
     setTimeout(() => {
       setIsPrinting(false);
     }, VVPAT_DISPLAY_MS);
-  };
+  }, [votedFor, playBeep]);
 
   /**
    * Resets the simulator state to allow casting another test vote.
    */
-  const resetSimulator = () => {
+  const resetSimulator = useCallback(() => {
     setVotedFor(null);
     setIsPrinting(false);
     setSlipData(null);
-  };
+  }, []);
 
   return (
     <div className="page-container">
@@ -68,7 +70,7 @@ const EVMSimulatorPage = () => {
         <div className="evm-machine" aria-label="Electronic Voting Machine" role="region">
           <div className="evm-header">Ballot Unit</div>
           <div className="evm-body">
-            {EVM_CANDIDATES.map((c) => (
+            {candidates.map((c) => (
               <div key={c.id} className="evm-row">
                 <div className="evm-candidate">
                   <div className="evm-symbol" aria-hidden="true">

@@ -4,6 +4,7 @@
  * @module pages/VoterGuidePage
  */
 
+import { useMemo } from 'react';
 import { usePageView } from '../hooks/usePageView';
 import { ELECTION_TIMELINE, VOTER_STEPS } from '../constants';
 import { Link } from 'react-router-dom';
@@ -20,6 +21,9 @@ import { PageHeader } from '../components/PageHeader';
 const VoterGuidePage = () => {
   usePageView('Voter Guide');
 
+  const steps = useMemo(() => VOTER_STEPS, []);
+  const timeline = useMemo(() => ELECTION_TIMELINE, []);
+
   return (
     <div className="page-container">
       <PageHeader 
@@ -28,9 +32,9 @@ const VoterGuidePage = () => {
         icon="🗺️" 
       />
 
-      <VoterJourney steps={VOTER_STEPS} />
+      <VoterJourney steps={steps} />
 
-      <TimelineSection timeline={ELECTION_TIMELINE} />
+      <TimelineSection timeline={timeline} />
 
       <div className="voter-footer-cta glass-card">
         <h3>Still have questions?</h3>
