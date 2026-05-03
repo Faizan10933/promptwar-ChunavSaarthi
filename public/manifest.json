@@ -1,0 +1,16 @@
+{
+  "name": "Chunav Saarthi",
+  "short_name": "Saarthi",
+  "description": "AI-Powered Election Education Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#ff9933",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

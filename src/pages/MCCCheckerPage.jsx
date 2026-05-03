@@ -4,7 +4,7 @@
  * @module pages/MCCCheckerPage
  */
 
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { checkMCCViolation, isAPIKeyConfigured } from '../lib/gemini';
 import { logToFirestore, trackEvent } from '../lib/firebase';
 import { usePageView } from '../hooks/usePageView';
@@ -22,7 +22,7 @@ const MCCCheckerPage = () => {
   const [scenario, setScenario] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const hasKey = isAPIKeyConfigured();
+  const hasKey = useMemo(() => isAPIKeyConfigured(), []);
 
   // Track page view via custom hook
   usePageView('MCC Checker');
@@ -30,7 +30,7 @@ const MCCCheckerPage = () => {
   /**
    * Triggers the AI analysis of the provided scenario.
    */
-  const handleCheck = async () => {
+  const handleCheck = useCallback(async () => {
     if (!scenario.trim() || loading) return;
     setLoading(true);
     setResult(null);
@@ -54,7 +54,9 @@ const MCCCheckerPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [scenario, loading]);
+
+  const examples = useMemo(() => MCC_EXAMPLES, []);
 
   /**
    * Helper to render individual detail rows safely.
@@ -119,7 +121,7 @@ const MCCCheckerPage = () => {
         </div>
 
         <div className="mcc-suggestions">
-          {MCC_EXAMPLES.map((ex, i) => (
+          {examples.map((ex, i) => (
             <button
               key={i}
               className="suggestion-chip"

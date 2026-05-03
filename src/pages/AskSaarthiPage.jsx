@@ -4,7 +4,7 @@
  * @module pages/AskSaarthiPage
  */
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { usePageView } from '../hooks/usePageView';
 import { chatWithSaarthi, isAPIKeyConfigured } from '../lib/gemini';
 import { logToFirestore, trackEvent } from '../lib/firebase';
@@ -28,7 +28,7 @@ const AskSaarthiPage = () => {
   const [loading, setLoading] = useState(false);
   const [communityQuestions, setCommunityQuestions] = useState([]);
   const messagesEndRef = useRef(null);
-  const hasKey = isAPIKeyConfigured();
+  const hasKey = useMemo(() => isAPIKeyConfigured(), []);
 
   // Track page view via custom hook
   usePageView('Ask Saarthi');
@@ -57,7 +57,7 @@ const AskSaarthiPage = () => {
   /**
    * Logs user feedback to Google Firestore.
    */
-  const handleFeedback = async (messageIndex, isHelpful) => {
+  const handleFeedback = useCallback(async (messageIndex, isHelpful) => {
     const msg = messages[messageIndex];
     if (msg.feedbackGiven) return;
 
@@ -75,13 +75,13 @@ const AskSaarthiPage = () => {
       isHelpful,
     });
     trackEvent('chat_feedback_given', { isHelpful });
-  };
+  }, [messages]);
 
   /**
    * Handles sending a new message to the AI.
    * @param {string} [text] - Optional preset text to send instead of input state.
    */
-  const handleSend = async (text) => {
+  const handleSend = useCallback(async (text) => {
     const msg = text || input.trim();
     if (!msg || loading) return;
 
@@ -107,16 +107,18 @@ const AskSaarthiPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [input, loading, messages]);
 
   /**
    * Handles form submission for the chat input.
    * @param {React.FormEvent} e - Form event.
    */
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
     handleSend();
-  };
+  }, [handleSend]);
+
+  const suggestions = useMemo(() => CHAT_SUGGESTIONS, []);
 
   return (
     <div className="chat-page">
@@ -163,7 +165,7 @@ const AskSaarthiPage = () => {
             </div>
           )}
           <div className="chat-suggestions" aria-label="Suggested questions">
-            {CHAT_SUGGESTIONS.map((s, i) => (
+            {suggestions.map((s, i) => (
               <button key={i} className="suggestion-chip" onClick={() => handleSend(s)} type="button">
                 {s}
               </button>
