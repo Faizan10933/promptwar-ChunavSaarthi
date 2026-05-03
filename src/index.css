@@ -58,16 +58,34 @@ body {
   outline-offset: 4px;
 }
 
-.visually-hidden {
-  position: absolute;
-  width: 1px;
+.visually-hidden:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   height: 1px;
-  padding: 0;
-  margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  position: absolute;
   white-space: nowrap;
-  border: 0;
+  width: 1px;
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--saffron);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 0 0 8px 8px;
+  z-index: 9999;
+  transition: top 0.2s;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0;
 }
 
 #root {
@@ -342,6 +360,26 @@ body {
 
 .stat-item {
   text-align: center;
+}
+
+.sidebar-brand {
+  margin-bottom: 40px;
+}
+
+.brand-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--saffron), var(--white), var(--green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.sidebar-brand p {color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
 }
 
 .stat-number {

@@ -45,9 +45,10 @@ function AppLayout() {
 
   return (
     <div className="app-layout">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <aside className="sidebar">
         <div className="sidebar-brand">
-          <h1>Chunav Saarthi</h1>
+          <div className="brand-title">Chunav Saarthi</div>
           <p>AI Election Guide</p>
         </div>
         <nav className="sidebar-nav">
