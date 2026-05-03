@@ -34,6 +34,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTests.js',
+    env: {
+      VITE_GEMINI_API_KEY: 'test_key',
+      VITE_FIREBASE_API_KEY: 'test_firebase_key'
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

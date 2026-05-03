@@ -28,16 +28,11 @@ describe('Gemini Library', () => {
   });
 
   it('chatWithSaarthi returns text response', async () => {
-    // Mock the env var internally for the test
-    import.meta.env.VITE_GEMINI_API_KEY = 'test_key';
-    
     const response = await chatWithSaarthi('Hello');
     expect(response).toBe('Mocked AI Response');
   });
 
   it('checkMCCViolation parses JSON properly or falls back', async () => {
-    import.meta.env.VITE_GEMINI_API_KEY = 'test_key';
-    
     const response = await checkMCCViolation('Candidate giving cash');
     // The mocked response is just plain text, so it falls back to the default object
     expect(response).toHaveProperty('is_violation');
