@@ -27,66 +27,68 @@ export const isFirebaseConfigured = () => !!firebaseConfig.apiKey;
 let app;
 let db;
 let analytics;
+let perf;
+ 
+ try {
+   if (isFirebaseConfigured()) {
+     app = initializeApp(firebaseConfig);
+     db = getFirestore(app);
+     // Analytics and Performance only in browser
+     if (typeof window !== 'undefined') {
+       analytics = getAnalytics(app);
+       perf = getPerformance(app);
+     }
+   } else {
+     console.warn('Firebase config missing. Running with mock Firebase (graceful fallback).');
+   }
+ } catch (error) {
+   console.error('Error initializing Firebase:', error);
+ }
+ 
+ /**
+  * Safely writes a document to Firestore. If Firebase is not configured,
+  * it mocks the write and logs to the console to prevent app crashes.
+  *
+  * @param {string} collectionName - Name of the Firestore collection
+  * @param {Object} data - The payload to save
+  * @returns {Promise<string>} The ID of the created document (or a mock ID)
+  */
+ export const logToFirestore = async (collectionName, data) => {
+   if (!isFirebaseConfigured() || !db) {
+     console.info(`[Mock Firestore] Saved to '${collectionName}':`, data);
+     return 'mock-doc-id-' + Date.now();
+   }
+ 
+   try {
+     const docRef = await addDoc(collection(db, collectionName), {
+       ...data,
+       timestamp: new Date().toISOString(),
+     });
+     return docRef.id;
+   } catch (error) {
+     console.error('Error adding document to Firestore:', error);
+     return null;
+   }
+ };
+ 
+ /**
+  * Safely logs an event to Firebase Analytics.
+  *
+  * @param {string} eventName - Name of the event
+  * @param {Object} [params] - Optional parameters
+  */
+ export const trackEvent = (eventName, params = {}) => {
+   if (!isFirebaseConfigured() || !analytics) {
+     console.info(`[Mock Analytics] Tracked event '${eventName}':`, params);
+     return;
+   }
+ 
+   try {
+     logEvent(analytics, eventName, params);
+   } catch (error) {
+     console.error('Error logging analytics event:', error);
+   }
+ };
+ 
+ export { app, db, analytics, perf };
 
-try {
-  if (isFirebaseConfigured()) {
-    app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    // Analytics is only supported in browser environments
-    if (typeof window !== 'undefined') {
-      analytics = getAnalytics(app);
-      getPerformance(app);
-    }
-  } else {
-    console.warn('Firebase config missing. Running with mock Firebase (graceful fallback).');
-  }
-} catch (error) {
-  console.error('Error initializing Firebase:', error);
-}
-
-/**
- * Safely writes a document to Firestore. If Firebase is not configured,
- * it mocks the write and logs to the console to prevent app crashes.
- *
- * @param {string} collectionName - Name of the Firestore collection
- * @param {Object} data - The payload to save
- * @returns {Promise<string>} The ID of the created document (or a mock ID)
- */
-export const logToFirestore = async (collectionName, data) => {
-  if (!isFirebaseConfigured() || !db) {
-    console.info(`[Mock Firestore] Saved to '${collectionName}':`, data);
-    return 'mock-doc-id-' + Date.now();
-  }
-
-  try {
-    const docRef = await addDoc(collection(db, collectionName), {
-      ...data,
-      timestamp: new Date().toISOString(),
-    });
-    return docRef.id;
-  } catch (error) {
-    console.error('Error adding document to Firestore:', error);
-    return null;
-  }
-};
-
-/**
- * Safely logs an event to Firebase Analytics.
- *
- * @param {string} eventName - Name of the event
- * @param {Object} [params] - Optional parameters
- */
-export const trackEvent = (eventName, params = {}) => {
-  if (!isFirebaseConfigured() || !analytics) {
-    console.info(`[Mock Analytics] Tracked event '${eventName}':`, params);
-    return;
-  }
-
-  try {
-    logEvent(analytics, eventName, params);
-  } catch (error) {
-    console.error('Error logging analytics event:', error);
-  }
-};
-
-export { app, db, analytics };

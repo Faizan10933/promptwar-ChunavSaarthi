@@ -9,6 +9,8 @@
  */
 
 import { GoogleGenAI } from '@google/genai';
+import { perf } from './firebase';
+import { trace } from 'firebase/performance';
 
 /**
  * Gemini API key loaded from environment variables.
@@ -72,17 +74,26 @@ const MODEL_FALLBACKS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.
  */
 async function callWithFallback(apiCall) {
   let lastError = null;
+  const t = perf ? trace(perf, 'gemini_api_total_latency') : null;
+  if (t) t.start();
 
-  for (const modelName of MODEL_FALLBACKS) {
-    try {
-      return await apiCall(modelName);
-    } catch (err) {
-      lastError = err;
-      console.warn(`[Gemini] Model "${modelName}" failed:`, err.message);
+  try {
+    for (const modelName of MODEL_FALLBACKS) {
+      try {
+        const result = await apiCall(modelName);
+        if (t) t.stop();
+        return result;
+      } catch (err) {
+        lastError = err;
+        console.warn(`[Gemini] Model "${modelName}" failed:`, err.message);
+      }
     }
+    if (t) t.stop();
+    throw lastError || new Error('All Gemini models failed. Please try again later.');
+  } catch (error) {
+    if (t) t.stop();
+    throw error;
   }
-
-  throw lastError || new Error('All Gemini models failed. Please try again later.');
 }
 
 /**
@@ -106,11 +117,6 @@ export async function chatWithSaarthi(userMessage, chatHistory = []) {
 
   return callWithFallback(async (modelName) => {
     const contents = [
-      { role: 'user', parts: [{ text: ELECTION_SYSTEM_PROMPT }] },
-      {
-        role: 'model',
-        parts: [{ text: 'Namaste! I am Saarthi. How can I help you understand Indian elections?' }],
-      },
       ...chatHistory.map((msg) => ({
         role: msg.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: msg.text }],
@@ -118,7 +124,20 @@ export async function chatWithSaarthi(userMessage, chatHistory = []) {
       { role: 'user', parts: [{ text: userMessage }] },
     ];
 
-    const model = client.getGenerativeModel({ model: modelName });
+    const model = client.getGenerativeModel({ 
+      model: modelName,
+      systemInstruction: ELECTION_SYSTEM_PROMPT,
+      safetySettings: [
+        {
+          category: 'HARM_CATEGORY_HARASSMENT',
+          threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+        },
+        {
+          category: 'HARM_CATEGORY_HATE_SPEECH',
+          threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+        },
+      ],
+    });
     const result = await model.generateContent({ contents });
     const response = await result.response;
     return response.text();
@@ -147,16 +166,21 @@ export async function checkMCCViolation(scenario) {
   }
 
   return callWithFallback(async (modelName) => {
-    const prompt = `${MCC_SYSTEM_PROMPT}\n\nAnalyze: "${scenario}"`;
-
     const model = client.getGenerativeModel({ 
       model: modelName,
+      systemInstruction: MCC_SYSTEM_PROMPT,
       generationConfig: {
         responseMimeType: "application/json",
-      }
+      },
+      safetySettings: [
+        {
+          category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+          threshold: 'BLOCK_ONLY_HIGH',
+        },
+      ],
     });
     
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent(`Analyze: "${scenario}"`);
     const response = await result.response;
     const text = response.text();
 

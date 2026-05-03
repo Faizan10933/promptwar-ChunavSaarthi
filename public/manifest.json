@@ -12,5 +12,13 @@
       "sizes": "any",
       "type": "image/svg+xml"
     }
+  ],
+  "categories": ["education", "government", "social"],
+  "shortcuts": [
+    {
+      "name": "Ask AI",
+      "url": "/ask",
+      "icons": [{ "src": "/vite.svg", "sizes": "any" }]
+    }
   ]
 }

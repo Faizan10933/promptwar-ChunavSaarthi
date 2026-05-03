@@ -44,7 +44,6 @@ global.google = {
 
 // Helper to access the mocks
 const mockAutocomplete = mockAutocompleteConstructor;
-const mockMarker = mockMarkerConstructor;
 
 // Mock geolocation
 const mockGeolocation = {
