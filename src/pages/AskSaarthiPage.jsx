@@ -139,6 +139,7 @@ const AskSaarthiPage = () => {
           <ChatMessage
             key={i}
             message={m}
+            showFeedback={i > 0}
             onFeedback={(isHelpful) => handleFeedback(i, isHelpful)}
           />
         ))}

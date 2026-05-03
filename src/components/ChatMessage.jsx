@@ -6,10 +6,11 @@ import PropTypes from 'prop-types';
  * @param {Object} props - Component props.
  * @param {Object} props.message - Message object with role and text.
  * @param {boolean} [props.isLoading=false] - Whether this is a loading placeholder.
+ * @param {boolean} [props.showFeedback=false] - Whether to show feedback buttons.
  * @param {Function} [props.onFeedback] - Callback for feedback (thumbs up/down).
  * @returns {React.ReactElement} The chat message bubble.
  */
-const ChatMessage = ({ message, isLoading = false, onFeedback }) => {
+const ChatMessage = ({ message, isLoading = false, showFeedback = false, onFeedback }) => {
   if (isLoading) {
     return (
       <div
@@ -34,7 +35,7 @@ const ChatMessage = ({ message, isLoading = false, onFeedback }) => {
       }}
     >
       <div className={`chat-bubble ${role}`}>{text}</div>
-      {role === 'assistant' && !text.includes('⚠️ Error') && (
+      {role === 'assistant' && showFeedback && !text.includes('⚠️ Error') && (
         <div className="chat-feedback-actions">
           {!feedbackGiven ? (
             <>
@@ -72,6 +73,7 @@ ChatMessage.propTypes = {
     feedbackGiven: PropTypes.bool,
   }),
   isLoading: PropTypes.bool,
+  showFeedback: PropTypes.bool,
   onFeedback: PropTypes.func,
 };
 
