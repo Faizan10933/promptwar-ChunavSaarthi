@@ -4,15 +4,29 @@
  * @module App
  */
 
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import AskSaarthiPage from './pages/AskSaarthiPage';
-import MCCCheckerPage from './pages/MCCCheckerPage';
-import MythBusterPage from './pages/MythBusterPage';
-import EVMSimulatorPage from './pages/EVMSimulatorPage';
 import ErrorBoundary from './components/ErrorBoundary';
 import { NAV_ITEMS } from './constants';
+
+// Lazy loaded page components for optimal code splitting
+const HomePage = lazy(() => import('./pages/HomePage'));
+const AskSaarthiPage = lazy(() => import('./pages/AskSaarthiPage'));
+const MCCCheckerPage = lazy(() => import('./pages/MCCCheckerPage'));
+const MythBusterPage = lazy(() => import('./pages/MythBusterPage'));
+const EVMSimulatorPage = lazy(() => import('./pages/EVMSimulatorPage'));
+
+/**
+ * Fallback UI shown while a lazy-loaded chunk is being downloaded.
+ * @returns {React.ReactElement} Loading spinner component.
+ */
+const PageLoader = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', flexDirection: 'column', gap: '16px' }}>
+    <div className="spinner" style={{ width: '40px', height: '40px', borderWidth: '4px' }}></div>
+    <div style={{ color: 'var(--text-secondary)' }}>Loading Saarthi...</div>
+  </div>
+);
+
 
 /**
  * Main application layout component containing the sidebar and content area.
@@ -61,13 +75,15 @@ function AppLayout() {
 
       <main className="main-area" id="main-content" role="main">
         <ErrorBoundary>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/ask" element={<AskSaarthiPage />} />
-            <Route path="/mcc" element={<MCCCheckerPage />} />
-            <Route path="/myths" element={<MythBusterPage />} />
-            <Route path="/evm" element={<EVMSimulatorPage />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/ask" element={<AskSaarthiPage />} />
+              <Route path="/mcc" element={<MCCCheckerPage />} />
+              <Route path="/myths" element={<MythBusterPage />} />
+              <Route path="/evm" element={<EVMSimulatorPage />} />
+            </Routes>
+          </Suspense>
         </ErrorBoundary>
       </main>
     </div>
