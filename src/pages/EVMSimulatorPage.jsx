@@ -61,7 +61,7 @@ const EVMSimulatorPage = () => {
       </p>
 
       <div className="evm-wrapper">
-        <div className="evm-machine" aria-label="Electronic Voting Machine">
+        <div className="evm-machine" aria-label="Electronic Voting Machine" role="region">
           <div className="evm-header">Ballot Unit</div>
           <div className="evm-body">
             {EVM_CANDIDATES.map((c) => (
@@ -92,8 +92,8 @@ const EVMSimulatorPage = () => {
             ))}
           </div>
         </div>
-
-        <div className="vvpat-machine" aria-label="Voter Verifiable Paper Audit Trail Machine">
+ 
+        <div className="vvpat-machine" aria-label="Voter Verifiable Paper Audit Trail Machine" role="region">
           <div className="vvpat-title">VVPAT</div>
           <div className="vvpat-sub">Verify your vote for 7 seconds</div>
           <div className="vvpat-window">
@@ -115,7 +115,7 @@ const EVMSimulatorPage = () => {
       </div>
 
       {votedFor && !isPrinting && (
-        <div className="vote-success" role="alert">
+        <div className="vote-success" role="alert" aria-live="assertive">
           <h2>✅ Vote Cast Successfully!</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
             You voted for <strong>{slipData?.name}</strong>. In a real election, the VVPAT slip

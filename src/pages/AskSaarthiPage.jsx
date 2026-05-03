@@ -141,7 +141,16 @@ const AskSaarthiPage = () => {
                     <span style={{ color: 'var(--text-muted)' }}>Was this helpful?</span>
                     <button
                       onClick={() => handleFeedback(i, true)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        minWidth: '44px',
+                        minHeight: '44px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       type="button"
                       aria-label="Helpful"
                     >
@@ -149,7 +158,16 @@ const AskSaarthiPage = () => {
                     </button>
                     <button
                       onClick={() => handleFeedback(i, false)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        minWidth: '44px',
+                        minHeight: '44px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                       type="button"
                       aria-label="Not helpful"
                     >
