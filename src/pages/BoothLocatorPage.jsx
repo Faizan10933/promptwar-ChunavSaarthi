@@ -114,7 +114,7 @@ const BoothLocatorPage = () => {
     };
 
     init();
-  }, []);
+  }, [booths]);
 
   return (
     <div className="page-container">
