@@ -9,6 +9,8 @@ import { usePageView } from '../hooks/usePageView';
 import { chatWithSaarthi, isAPIKeyConfigured } from '../lib/gemini';
 import { logToFirestore, trackEvent } from '../lib/firebase';
 import { CHAT_SUGGESTIONS } from '../constants';
+import { PageHeader } from '../components/PageHeader';
+import { Banner } from '../components/Banner';
 import ChatMessage from '../components/ChatMessage';
 
 /**
@@ -97,7 +99,7 @@ const AskSaarthiPage = () => {
     } catch (err) {
       const isQuota = err.message?.includes('429') || err.message?.includes('quota');
       const errorMessage = isQuota
-        ? '⚠️ API quota exhausted for this key. To fix:\\n\\n1. Go to https://aistudio.google.com/apikey\\n2. Create a new API key\\n3. Update your .env file\\n4. Restart the dev server'
+        ? '⚠️ API quota exhausted for this key.'
         : `⚠️ Error: ${err.message}`;
 
       setMessages((prev) => [...prev, { role: 'assistant', text: errorMessage }]);
@@ -118,18 +120,14 @@ const AskSaarthiPage = () => {
 
   return (
     <div className="chat-page">
-      <div className="chat-header">
-        <h1>
-          <span aria-hidden="true">🤖</span> Ask Saarthi AI
-        </h1>
-        <p>Your AI-powered Indian Election expert • Powered by Google Gemini</p>
-      </div>
+      <PageHeader 
+        title="Ask Saarthi AI" 
+        subtitle="Your AI-powered Indian Election expert • Powered by Google Gemini" 
+        icon="🤖" 
+      />
 
       {!hasKey && (
-        <div className="api-banner" role="alert" style={{ margin: '16px 32px 0' }}>
-          ⚠️ Set your Gemini API key: Create a <code>.env</code> file with{' '}
-          <code>VITE_GEMINI_API_KEY=your_key</code>
-        </div>
+        <Banner message="Set your Gemini API key: Create a .env file with VITE_GEMINI_API_KEY=your_key" />
       )}
 
       <div className="chat-messages" aria-live="polite">

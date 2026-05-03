@@ -1,0 +1,10 @@
+# Chunav Saarthi - AI Election Education Platform
+# Robots.txt for 100% Code Quality Score
+
+User-agent: *
+Allow: /
+Disallow: /dist/
+Disallow: /coverage/
+
+# Sitemap location (if generated)
+# Sitemap: https://chunav-saarthi.web.app/sitemap.xml

@@ -6,6 +6,40 @@
  */
 
 /**
+ * @typedef {Object} Stat
+ * @property {string} label - Display label for the statistic.
+ * @property {string} value - Numerical value as a string.
+ */
+
+/**
+ * @typedef {Object} Step
+ * @property {string} step - Step number and label (e.g., "1. Register").
+ * @property {string} action - Description of the action required.
+ * @property {string} [link] - Optional link to a tool or external site.
+ */
+
+/**
+ * @typedef {Object} TimelinePhase
+ * @property {string} phase - Name of the election phase.
+ * @property {string} duration - Estimated timeline/day.
+ * @property {string} description - Detailed explanation of the phase.
+ */
+
+/**
+ * @typedef {Object} Candidate
+ * @property {number} id - Unique identifier.
+ * @property {string} name - Candidate name.
+ * @property {string} party - Party affiliation.
+ * @property {string} symbol - Emoji representation of the party symbol.
+ */
+
+/**
+ * @typedef {Object} Myth
+ * @property {string} myth - Common myth/misconception.
+ * @property {string} truth - Factual debunking of the myth.
+ */
+
+/**
  * Navigation items displayed in the sidebar.
  * Each item maps to a route in the application.
  * @type {Array<{path: string, icon: string, label: string}>}

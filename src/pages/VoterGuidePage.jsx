@@ -7,6 +7,10 @@
 import { usePageView } from '../hooks/usePageView';
 import { ELECTION_TIMELINE, VOTER_STEPS } from '../constants';
 import { Link } from 'react-router-dom';
+import { VoterJourney } from '../components/home/VoterJourney';
+import { TimelineSection } from '../components/home/TimelineSection';
+
+import { PageHeader } from '../components/PageHeader';
 
 /**
  * Page component that provides a step-by-step guide and chronological timeline
@@ -18,63 +22,15 @@ const VoterGuidePage = () => {
 
   return (
     <div className="page-container">
-      <div className="section-header">
-        <h1 className="page-title">
-          <span aria-hidden="true">🗺️</span> Complete Voter Guide
-        </h1>
-        <p className="page-subtitle">
-          Everything you need to know about timelines, registration, and the voting process in India.
-        </p>
-      </div>
+      <PageHeader 
+        title="Complete Voter Guide" 
+        subtitle="Everything you need to know about timelines, registration, and the voting process in India." 
+        icon="🗺️" 
+      />
 
-      <div className="guide-section">
-        <div className="section-header" style={{ textAlign: 'left', marginBottom: '32px' }}>
-          <h2>1. The Voter Journey</h2>
-          <p>Follow these 4 simple steps to ensure your voice is heard.</p>
-        </div>
+      <VoterJourney steps={VOTER_STEPS} />
 
-        <div className="voter-journey-grid">
-          {VOTER_STEPS.map((s, i) => (
-            <div key={i} className="glass-card journey-card">
-              <div className="step-badge">{s.step}</div>
-              <p style={{ fontWeight: 500, margin: '12px 0' }}>{s.action}</p>
-              {s.link && (
-                s.link.startsWith('http') ? (
-                  <a href={s.link} target="_blank" rel="noopener noreferrer" className="step-link">
-                    External Link ↗
-                  </a>
-                ) : (
-                  <Link to={s.link} className="step-link">
-                    Try Feature →
-                  </Link>
-                )
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="guide-section" style={{ marginTop: '64px' }}>
-        <div className="section-header" style={{ textAlign: 'left', marginBottom: '32px' }}>
-          <h2>2. Official Election Timeline</h2>
-          <p>The standard ECI procedure from notification to counting.</p>
-        </div>
-
-        <div className="timeline-container">
-          {ELECTION_TIMELINE.map((t, i) => (
-            <div key={i} className="timeline-item">
-              <div className="timeline-dot" />
-              <div className="timeline-content">
-                <div className="timeline-header">
-                  <span className="timeline-phase">{t.phase}</span>
-                  <span className="timeline-duration">{t.duration}</span>
-                </div>
-                <p className="timeline-desc">{t.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <TimelineSection timeline={ELECTION_TIMELINE} />
 
       <div className="voter-footer-cta glass-card">
         <h3>Still have questions?</h3>

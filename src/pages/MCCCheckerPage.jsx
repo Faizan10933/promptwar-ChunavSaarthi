@@ -11,6 +11,9 @@ import { usePageView } from '../hooks/usePageView';
 import { Card, Spinner, Badge } from '../components/UI';
 import { MCC_EXAMPLES } from '../constants';
 
+import { PageHeader } from '../components/PageHeader';
+import { Banner } from '../components/Banner';
+
 /**
  * Component for checking Election Commission Model Code of Conduct violations.
  * @returns {React.ReactElement} The MCC Checker page.
@@ -71,19 +74,14 @@ const MCCCheckerPage = () => {
 
   return (
     <div className="page-container">
-      <h1 className="page-title">
-        <span aria-hidden="true">⚖️</span> MCC Violation Checker
-      </h1>
-      <p className="page-subtitle">
-        Describe a real-world scenario and our AI will analyze whether it violates the Election
-        Commission&apos;s Model Code of Conduct. Learn your rights as a citizen.
-      </p>
+      <PageHeader 
+        title="MCC Violation Checker" 
+        subtitle="Describe a real-world scenario and our AI will analyze whether it violates the Election Commission's Model Code of Conduct." 
+        icon="⚖️" 
+      />
 
       {!hasKey && (
-        <div className="api-banner" role="alert">
-          ⚠️ Set your Gemini API key: Create a <code>.env</code> file with{' '}
-          <code>VITE_GEMINI_API_KEY=your_key</code>
-        </div>
+        <Banner message="Set your Gemini API key: Create a .env file with VITE_GEMINI_API_KEY=your_key" />
       )}
 
       <Card className="mcc-checker-form">
@@ -159,17 +157,7 @@ const MCCCheckerPage = () => {
       )}
 
       {result?.error && (
-        <div
-          className="api-banner"
-          role="alert"
-          style={{
-            background: 'rgba(239,68,68,0.08)',
-            borderColor: 'rgba(239,68,68,0.2)',
-            color: 'var(--red)',
-          }}
-        >
-          ⚠️ Error: {result.error}
-        </div>
+        <Banner message={`Error: ${result.error}`} type="error" />
       )}
     </div>
   );

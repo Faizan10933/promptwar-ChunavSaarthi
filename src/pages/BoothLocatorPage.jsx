@@ -8,6 +8,9 @@ import { usePageView } from '../hooks/usePageView';
 import { Spinner } from '../components/UI';
 import { loadGoogleMaps, MOCK_BOOTHS } from '../lib/maps';
 
+import { PageHeader } from '../components/PageHeader';
+import { Banner } from '../components/Banner';
+
 /**
  * Interactive Polling Booth Locator page.
  * Uses Google Maps API to display nearby stations and user location.
@@ -93,13 +96,11 @@ const BoothLocatorPage = () => {
 
   return (
     <div className="page-container">
-      <h1 className="page-title">
-        <span aria-hidden="true">📍</span> Polling Booth Locator
-      </h1>
-      <p className="page-subtitle">
-        Find your nearest polling station powered by **Google Maps**. Enter your EPIC number or
-        search by location to verify your booth details.
-      </p>
+      <PageHeader 
+        title="Polling Booth Locator" 
+        subtitle="Find your nearest polling station powered by Google Maps. Search by location to verify your booth details." 
+        icon="📍" 
+      />
 
       <div className="booth-map-container">
         {loading && (
@@ -108,30 +109,21 @@ const BoothLocatorPage = () => {
           </div>
         )}
         {error && (
-          <div
-            style={{
-              padding: '40px',
-              textAlign: 'center',
-              color: 'var(--red)',
-            }}
-          >
-            <h3>⚠️ Google Maps Error</h3>
-            <p>{error}</p>
-          </div>
+          <Banner message={`Google Maps Error: ${error}`} type="error" />
         )}
         <div 
           ref={mapRef} 
-          style={{ width: '100%', height: '100%' }} 
+          className="map-element"
           aria-label="Interactive Google Map showing polling booth locations" 
           role="region"
         />
       </div>
 
-      <div className="features-grid" style={{ marginTop: '32px' }}>
+      <div className="features-grid mt-md">
         {MOCK_BOOTHS.map((booth) => (
-          <div key={booth.id} className="glass-card" style={{ padding: '20px' }}>
-            <h3 style={{ margin: 0, fontSize: '1rem' }}>{booth.name}</h3>
-            <p style={{ margin: '8px 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+          <div key={booth.id} className="glass-card p-md">
+            <h3 className="booth-name">{booth.name}</h3>
+            <p className="booth-address">
               {booth.address}
             </p>
           </div>
