@@ -35,7 +35,7 @@ const MythBusterPage = () => {
 
       <div className="myths-grid" role="list">
         {ELECTION_MYTHS.map((item, i) => {
-          const isExpanded = expanded[i];
+          const isExpanded = !!expanded[i];
           
           return (
             <div
