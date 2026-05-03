@@ -85,6 +85,26 @@ const BoothLocatorPage = () => {
             }
           );
         }
+
+        // Initialize Places Autocomplete
+        const searchInput = document.getElementById('pac-input');
+        if (searchInput && window.google.maps.places) {
+          const autocomplete = new window.google.maps.places.Autocomplete(searchInput);
+          autocomplete.bindTo('bounds', map);
+
+          autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (!place.geometry || !place.geometry.location) {
+              return;
+            }
+            if (place.geometry.viewport) {
+              map.fitBounds(place.geometry.viewport);
+            } else {
+              map.setCenter(place.geometry.location);
+              map.setZoom(17);
+            }
+          });
+        }
       } catch (err) {
         setError(err.message);
         setLoading(false);
@@ -101,6 +121,17 @@ const BoothLocatorPage = () => {
         subtitle="Find your nearest polling station powered by Google Maps. Search by location to verify your booth details." 
         icon="📍" 
       />
+
+      <div style={{ marginBottom: '16px' }}>
+        <label htmlFor="pac-input" className="visually-hidden">Search your area</label>
+        <input 
+          id="pac-input" 
+          className="chat-input" 
+          type="text" 
+          placeholder="Search your locality (e.g., Connaught Place)..." 
+          style={{ width: '100%', maxWidth: '400px', display: 'block' }}
+        />
+      </div>
 
       <div className="booth-map-container">
         {loading && (

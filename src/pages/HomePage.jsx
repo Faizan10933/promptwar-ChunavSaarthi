@@ -5,7 +5,6 @@
  */
 
 import { ELECTION_STATS, ELECTION_TIMELINE, VOTER_STEPS } from '../constants';
-import { PageHeader } from '../components/PageHeader';
 import { HeroSection } from '../components/home/HeroSection';
 import { VoterJourney } from '../components/home/VoterJourney';
 import { TimelineSection } from '../components/home/TimelineSection';

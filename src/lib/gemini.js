@@ -149,7 +149,13 @@ export async function checkMCCViolation(scenario) {
   return callWithFallback(async (modelName) => {
     const prompt = `${MCC_SYSTEM_PROMPT}\n\nAnalyze: "${scenario}"`;
 
-    const model = client.getGenerativeModel({ model: modelName });
+    const model = client.getGenerativeModel({ 
+      model: modelName,
+      generationConfig: {
+        responseMimeType: "application/json",
+      }
+    });
+    
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();

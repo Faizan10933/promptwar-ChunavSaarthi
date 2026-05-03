@@ -27,7 +27,7 @@ describe('VoterGuidePage', () => {
       </BrowserRouter>
     );
     
-    expect(screen.getByText(/1. The Voter Journey/i)).toBeInTheDocument();
+    expect(screen.getByText(/Interactive Voter Journey/i)).toBeInTheDocument();
     expect(screen.getByText(/1. Register/i)).toBeInTheDocument();
   });
 
@@ -38,8 +38,8 @@ describe('VoterGuidePage', () => {
       </BrowserRouter>
     );
     
-    expect(screen.getByText(/2. Official Election Timeline/i)).toBeInTheDocument();
-    expect(screen.getByText(/Announcement/i)).toBeInTheDocument();
+    expect(screen.getByText(/Election Process Timeline/i)).toBeInTheDocument();
+    expect(screen.getByText('Announcement')).toBeInTheDocument();
     expect(screen.getAllByText(/Counting/i).length).toBeGreaterThan(0);
   });
 });

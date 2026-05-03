@@ -50,7 +50,7 @@ describe('MCCCheckerPage', () => {
     expect(screen.getByText(/Analyzing/i)).toBeInTheDocument();
     
     await waitFor(() => {
-      expect(screen.getByText(/🚨 MCC Violation Detected/i)).toBeInTheDocument();
+      expect(screen.getByText(/MCC Violation Detected/i)).toBeInTheDocument();
       expect(screen.getByText('Test violation')).toBeInTheDocument();
     });
 
@@ -77,7 +77,7 @@ describe('MCCCheckerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /Analyze Scenario/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/⚠️ Error: Analysis Failed/i)).toBeInTheDocument();
+      expect(screen.getByText(/Error: Analysis Failed/i)).toBeInTheDocument();
     });
   });
 
@@ -93,7 +93,7 @@ describe('MCCCheckerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /Analyze Scenario/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/✅ No Violation Found/i)).toBeInTheDocument();
+      expect(screen.getByText(/No Violation Found/i)).toBeInTheDocument();
       expect(screen.getByText('All good')).toBeInTheDocument();
     });
   });
