@@ -16,9 +16,9 @@ describe('HomePage', () => {
 
     // Primary CTAs should be present (there are multiple links with these names)
     const askLinks = screen.getAllByRole('link', { name: /Ask Saarthi AI/i });
-    const mccLinks = screen.getAllByRole('link', { name: /Check MCC Violation/i });
+    const guideLinks = screen.getAllByRole('link', { name: /Full Voter Guide/i });
 
     expect(askLinks.length).toBeGreaterThan(0);
-    expect(mccLinks.length).toBeGreaterThan(0);
+    expect(guideLinks.length).toBeGreaterThan(0);
   });
 });

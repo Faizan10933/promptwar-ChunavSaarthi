@@ -16,6 +16,7 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const AskSaarthiPage = lazy(() => import('./pages/AskSaarthiPage'));
 const MCCCheckerPage = lazy(() => import('./pages/MCCCheckerPage'));
 const MythBusterPage = lazy(() => import('./pages/MythBusterPage'));
+const VoterGuidePage = lazy(() => import('./pages/VoterGuidePage'));
 const EVMSimulatorPage = lazy(() => import('./pages/EVMSimulatorPage'));
 const BoothLocatorPage = lazy(() => import('./pages/BoothLocatorPage'));
 
@@ -90,6 +91,7 @@ function AppLayout() {
               <Route path="/ask" element={<AskSaarthiPage />} />
               <Route path="/mcc" element={<MCCCheckerPage />} />
               <Route path="/myths" element={<MythBusterPage />} />
+              <Route path="/guide" element={<VoterGuidePage />} />
               <Route path="/evm" element={<EVMSimulatorPage />} />
               <Route path="/booths" element={<BoothLocatorPage />} />
             </Routes>

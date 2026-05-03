@@ -8,6 +8,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { getAnalytics, logEvent } from 'firebase/analytics';
+import { getPerformance } from 'firebase/performance';
 
 // Configuration from environment variables
 const firebaseConfig = {
@@ -34,6 +35,7 @@ try {
     // Analytics is only supported in browser environments
     if (typeof window !== 'undefined') {
       analytics = getAnalytics(app);
+      getPerformance(app);
     }
   } else {
     console.warn('Firebase config missing. Running with mock Firebase (graceful fallback).');

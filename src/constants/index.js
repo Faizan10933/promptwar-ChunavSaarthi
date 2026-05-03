@@ -15,6 +15,7 @@ export const NAV_ITEMS = [
   { path: '/ask', icon: '🤖', label: 'Ask Saarthi AI' },
   { path: '/mcc', icon: '⚖️', label: 'MCC Checker' },
   { path: '/myths', icon: '🔍', label: 'Myth Buster' },
+  { path: '/guide', icon: '🗺️', label: 'Voter Guide' },
   { path: '/evm', icon: '🗳️', label: 'EVM Simulator' },
   { path: '/booths', icon: '📍', label: 'Booth Locator' },
 ];

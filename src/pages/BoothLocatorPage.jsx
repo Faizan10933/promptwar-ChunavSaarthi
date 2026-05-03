@@ -30,12 +30,19 @@ const BoothLocatorPage = () => {
         const map = new window.google.maps.Map(mapRef.current, {
           center: { lat: 28.6139, lng: 77.2090 }, // Default to Delhi
           zoom: 14,
+          mapTypeControl: true,
+          streetViewControl: true,
+          fullscreenControl: true,
           styles: [
             { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
             { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
             { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
           ],
         });
+
+        // Add Traffic Layer for advanced service usage
+        const trafficLayer = new window.google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
 
         // Add markers for booths
         MOCK_BOOTHS.forEach((booth) => {

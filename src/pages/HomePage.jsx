@@ -33,8 +33,8 @@ const HomePage = () => {
         <Link to="/ask" className="btn-primary">
           <span aria-hidden="true">💬</span> Ask Saarthi AI
         </Link>
-        <Link to="/mcc" className="btn-secondary">
-          <span aria-hidden="true">⚖️</span> Check MCC Violation
+        <Link to="/guide" className="btn-secondary">
+          <span aria-hidden="true">🗺️</span> Full Voter Guide
         </Link>
       </div>
 

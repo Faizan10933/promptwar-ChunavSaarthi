@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -10,7 +11,7 @@ import PropTypes from 'prop-types';
  * @param {Function} [props.onFeedback] - Callback for feedback (thumbs up/down).
  * @returns {React.ReactElement} The chat message bubble.
  */
-const ChatMessage = ({ message, isLoading = false, showFeedback = false, onFeedback }) => {
+const ChatMessage = memo(({ message, isLoading = false, showFeedback = false, onFeedback }) => {
   if (isLoading) {
     return (
       <div
@@ -64,7 +65,7 @@ const ChatMessage = ({ message, isLoading = false, showFeedback = false, onFeedb
       )}
     </div>
   );
-};
+});
 
 ChatMessage.propTypes = {
   message: PropTypes.shape({
@@ -76,5 +77,7 @@ ChatMessage.propTypes = {
   showFeedback: PropTypes.bool,
   onFeedback: PropTypes.func,
 };
+
+ChatMessage.displayName = 'ChatMessage';
 
 export default ChatMessage;
