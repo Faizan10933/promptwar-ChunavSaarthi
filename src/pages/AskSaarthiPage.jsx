@@ -6,6 +6,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { chatWithSaarthi, isAPIKeyConfigured } from '../lib/gemini';
+import { logToFirestore, trackEvent } from '../lib/firebase';
 import { CHAT_SUGGESTIONS } from '../constants';
 
 /**
@@ -29,6 +30,34 @@ const AskSaarthiPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Track page view
+  useEffect(() => {
+    trackEvent('page_view', { page_title: 'Ask Saarthi' });
+  }, []);
+
+  /**
+   * Logs user feedback to Google Firestore.
+   */
+  const handleFeedback = async (messageIndex, isHelpful) => {
+    const msg = messages[messageIndex];
+    if (msg.feedbackGiven) return;
+
+    // Mark locally to prevent multiple votes
+    setMessages(prev => {
+      const newMsgs = [...prev];
+      newMsgs[messageIndex] = { ...msg, feedbackGiven: true };
+      return newMsgs;
+    });
+
+    // Save to Google Firestore
+    await logToFirestore('chat_feedback', {
+      question: messages[messageIndex - 1]?.text || 'N/A',
+      response: msg.text,
+      isHelpful,
+    });
+    trackEvent('chat_feedback_given', { isHelpful });
+  };
+
   /**
    * Handles sending a new message to the AI.
    * @param {string} [text] - Optional preset text to send instead of input state.
@@ -41,11 +70,13 @@ const AskSaarthiPage = () => {
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
     setLoading(true);
+    trackEvent('ask_saarthi_question');
 
     try {
       const history = messages.filter((m) => m.role !== 'system');
       const reply = await chatWithSaarthi(msg, history);
       setMessages((prev) => [...prev, { role: 'assistant', text: reply }]);
+      trackEvent('ask_saarthi_success');
     } catch (err) {
       const isQuota = err.message?.includes('429') || err.message?.includes('quota');
       const errorMessage = isQuota
@@ -53,6 +84,7 @@ const AskSaarthiPage = () => {
         : `⚠️ Error: ${err.message}`;
 
       setMessages((prev) => [...prev, { role: 'assistant', text: errorMessage }]);
+      trackEvent('ask_saarthi_error', { error: err.message });
     } finally {
       setLoading(false);
     }
@@ -82,8 +114,23 @@ const AskSaarthiPage = () => {
 
       <div className="chat-messages" aria-live="polite">
         {messages.map((m, i) => (
-          <div key={i} className={`chat-bubble ${m.role}`}>
-            {m.text}
+          <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
+            <div className={`chat-bubble ${m.role}`}>
+              {m.text}
+            </div>
+            {m.role === 'assistant' && i > 0 && !m.text.includes('⚠️ Error') && (
+              <div style={{ marginTop: '6px', display: 'flex', gap: '8px', fontSize: '0.75rem', paddingLeft: '8px' }}>
+                {!m.feedbackGiven ? (
+                  <>
+                    <span style={{ color: 'var(--text-muted)' }}>Was this helpful?</span>
+                    <button onClick={() => handleFeedback(i, true)} style={{ background: 'none', border: 'none', cursor: 'pointer' }} type="button" aria-label="Helpful">👍</button>
+                    <button onClick={() => handleFeedback(i, false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }} type="button" aria-label="Not helpful">👎</button>
+                  </>
+                ) : (
+                  <span style={{ color: 'var(--text-muted)' }}>Thanks for the feedback!</span>
+                )}
+              </div>
+            )}
           </div>
         ))}
         {loading && (

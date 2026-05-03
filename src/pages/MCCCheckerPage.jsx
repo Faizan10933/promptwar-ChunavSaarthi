@@ -4,8 +4,9 @@
  * @module pages/MCCCheckerPage
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { checkMCCViolation, isAPIKeyConfigured } from '../lib/gemini';
+import { logToFirestore, trackEvent } from '../lib/firebase';
 import { MCC_EXAMPLES } from '../constants';
 
 /**
@@ -18,6 +19,11 @@ const MCCCheckerPage = () => {
   const [loading, setLoading] = useState(false);
   const hasKey = isAPIKeyConfigured();
 
+  // Track page view
+  useEffect(() => {
+    trackEvent('page_view', { page_title: 'MCC Checker' });
+  }, []);
+
   /**
    * Triggers the AI analysis of the provided scenario.
    */
@@ -25,12 +31,23 @@ const MCCCheckerPage = () => {
     if (!scenario.trim() || loading) return;
     setLoading(true);
     setResult(null);
+    trackEvent('mcc_check_started');
 
     try {
       const res = await checkMCCViolation(scenario);
       setResult(res);
+      trackEvent('mcc_check_success', { is_violation: res.is_violation });
+      
+      // Automatically log the checked scenario to Firestore for analytics
+      await logToFirestore('mcc_reports', {
+        scenario_description: scenario,
+        is_violation: res.is_violation,
+        section: res.section,
+        confidence: res.confidence,
+      });
     } catch (err) {
       setResult({ error: err.message });
+      trackEvent('mcc_check_error', { error: err.message });
     } finally {
       setLoading(false);
     }
