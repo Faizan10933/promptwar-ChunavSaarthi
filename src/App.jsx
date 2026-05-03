@@ -53,7 +53,7 @@ function AppLayout() {
   return (
     <div className="app-layout">
       <a href="#main-content" className="skip-link">Skip to main content</a>
-      <aside className="sidebar">
+      <aside className="sidebar" aria-label="Main Navigation">
         <div className="sidebar-brand">
           <div className="brand-title">Chunav Saarthi</div>
           <p>AI Election Guide</p>
@@ -75,7 +75,7 @@ function AppLayout() {
           ))}
         </nav>
         <div className="sidebar-footer">
-          <div id="google_translate_element" style={{ marginBottom: '12px' }}></div>
+          <div id="google_translate_element" aria-label="Language translation widget" style={{ marginBottom: '12px' }}></div>
           <strong style={{ color: 'var(--saffron)' }}>Powered by</strong>
           <br />
           Google Gemini AI

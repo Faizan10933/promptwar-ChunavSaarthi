@@ -112,7 +112,12 @@ const BoothLocatorPage = () => {
             <p>{error}</p>
           </div>
         )}
-        <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+        <div 
+          ref={mapRef} 
+          style={{ width: '100%', height: '100%' }} 
+          aria-label="Interactive Google Map showing polling booth locations" 
+          role="region"
+        />
       </div>
 
       <div className="features-grid" style={{ marginTop: '32px' }}>
