@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import { usePageView } from '../hooks/usePageView';
 import { useAudio } from '../hooks/useAudio';
 import { EVM_CANDIDATES, VVPAT_DISPLAY_MS } from '../constants';
 
@@ -17,6 +18,9 @@ const EVMSimulatorPage = () => {
   const [isPrinting, setIsPrinting] = useState(false);
   const [slipData, setSlipData] = useState(null);
   const { playBeep } = useAudio();
+
+  // Track page view via custom hook
+  usePageView('EVM Simulator');
 
   /**
    * Handles the voting action when a user clicks the blue EVM button.
@@ -99,8 +103,7 @@ const EVMSimulatorPage = () => {
           <div className="vvpat-window">
             {slipData && (
               <div
-                className={`vvpat-slip ${isPrinting ? 'printing' : ''}`}
-                style={{ display: isPrinting ? 'flex' : 'none' }}
+                className={`vvpat-slip ${isPrinting ? 'printing' : ''} ${isPrinting ? 'show' : 'hide'}`}
                 aria-live="assertive"
               >
                 <span className="slip-serial">S.No: {slipData.id}</span>
@@ -117,7 +120,7 @@ const EVMSimulatorPage = () => {
       {votedFor && !isPrinting && (
         <div className="vote-success" role="alert" aria-live="assertive">
           <h2>✅ Vote Cast Successfully!</h2>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
+          <p className="success-description">
             You voted for <strong>{slipData?.name}</strong>. In a real election, the VVPAT slip
             drops into a sealed box for audit purposes. Your vote is now securely recorded in the
             EVM&apos;s control unit.

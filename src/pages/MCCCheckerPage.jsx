@@ -4,9 +4,11 @@
  * @module pages/MCCCheckerPage
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { checkMCCViolation, isAPIKeyConfigured } from '../lib/gemini';
 import { logToFirestore, trackEvent } from '../lib/firebase';
+import { usePageView } from '../hooks/usePageView';
+import { Card, Spinner, Badge } from '../components/UI';
 import { MCC_EXAMPLES } from '../constants';
 
 /**
@@ -19,10 +21,8 @@ const MCCCheckerPage = () => {
   const [loading, setLoading] = useState(false);
   const hasKey = isAPIKeyConfigured();
 
-  // Track page view
-  useEffect(() => {
-    trackEvent('page_view', { page_title: 'MCC Checker' });
-  }, []);
+  // Track page view via custom hook
+  usePageView('MCC Checker');
 
   /**
    * Triggers the AI analysis of the provided scenario.
@@ -86,7 +86,7 @@ const MCCCheckerPage = () => {
         </div>
       )}
 
-      <div className="glass-card" style={{ padding: '28px', marginBottom: '24px' }}>
+      <Card className="mcc-checker-form">
         <label htmlFor="scenario-input" className="visually-hidden">
           Describe a scenario
         </label>
@@ -99,15 +99,7 @@ const MCCCheckerPage = () => {
           aria-label="Scenario description"
         />
 
-        <div
-          style={{
-            marginTop: '16px',
-            display: 'flex',
-            gap: '12px',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
+        <div className="mcc-form-actions">
           <button
             className="btn-primary"
             onClick={handleCheck}
@@ -116,19 +108,19 @@ const MCCCheckerPage = () => {
           >
             {loading ? (
               <>
-                <span className="spinner" style={{ marginRight: '8px' }} aria-hidden="true" />
+                <Spinner />
                 Analyzing...
               </>
             ) : (
               'Analyze Scenario'
             )}
           </button>
-          <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+          <span className="mcc-hint">
             or try an example:
           </span>
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '12px' }}>
+        <div className="mcc-suggestions">
           {MCC_EXAMPLES.map((ex, i) => (
             <button
               key={i}
@@ -143,7 +135,7 @@ const MCCCheckerPage = () => {
             </button>
           ))}
         </div>
-      </div>
+      </Card>
 
       {result && !result.error && (
         <div
@@ -151,27 +143,10 @@ const MCCCheckerPage = () => {
           role="region"
           aria-live="polite"
         >
-          <h3
-            style={{
-              color: result.is_violation ? 'var(--red)' : 'var(--green)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-            }}
-          >
+          <h3 className={result.is_violation ? 'text-error' : 'text-success'}>
             {result.is_violation ? '🚨 MCC Violation Detected' : '✅ No Violation Found'}
             {result.confidence && (
-              <span
-                style={{
-                  fontSize: '0.7rem',
-                  padding: '4px 10px',
-                  background: 'rgba(255,255,255,0.1)',
-                  borderRadius: '100px',
-                  fontWeight: 600,
-                }}
-              >
-                {result.confidence.toUpperCase()} CONFIDENCE
-              </span>
+              <Badge text={`${result.confidence} CONFIDENCE`} className="result-badge" />
             )}
           </h3>
 

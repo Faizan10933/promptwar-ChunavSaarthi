@@ -1041,3 +1041,133 @@ body {
     padding: 20px;
   }
 }
+
+/* UI Components */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px;
+  background: var(--bg-glass);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.spinner.md {
+  width: 40px;
+  height: 40px;
+  border-width: 4px;
+}
+
+.booth-map-container {
+  height: 500px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 0;
+}
+
+.booth-loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.mcc-checker-form {
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.mcc-form-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mcc-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.mcc-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.text-error {
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.text-success {
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-badge {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.myth-card {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.truth-title {
+  color: var(--green);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.vvpat-slip.show {
+  display: flex;
+}
+
+.vvpat-slip.hide {
+  display: none;
+}
+
+.success-description {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.suggestions-label {
+  width: 100%;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  padding-left: 8px;
+}
+
+.suggestion-chip.trending {
+  border-color: var(--saffron);
+}
+
+
+
+
+

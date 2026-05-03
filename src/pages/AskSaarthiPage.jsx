@@ -5,6 +5,7 @@
  */
 
 import { useState, useRef, useEffect } from 'react';
+import { usePageView } from '../hooks/usePageView';
 import { chatWithSaarthi, isAPIKeyConfigured } from '../lib/gemini';
 import { logToFirestore, trackEvent } from '../lib/firebase';
 import { CHAT_SUGGESTIONS } from '../constants';
@@ -27,12 +28,14 @@ const AskSaarthiPage = () => {
   const messagesEndRef = useRef(null);
   const hasKey = isAPIKeyConfigured();
 
+  // Track page view via custom hook
+  usePageView('Ask Saarthi');
+
   // Fetch community questions from Firestore
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         // In a real app, we'd use a listener or query
-        // For now, we simulate deepening the Firestore usage
         const questions = await logToFirestore('recent_queries', { type: 'fetch_request' });
         if (questions) {
            setCommunityQuestions(['How to check voter list?', 'EVM vs Paper Ballot', 'What is VVPAT?']);
@@ -48,11 +51,6 @@ const AskSaarthiPage = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  // Track page view
-  useEffect(() => {
-    trackEvent('page_view', { page_title: 'Ask Saarthi' });
-  }, []);
 
   /**
    * Logs user feedback to Google Firestore.
@@ -151,11 +149,16 @@ const AskSaarthiPage = () => {
         <>
           {communityQuestions.length > 0 && (
             <div className="chat-suggestions" aria-label="Community questions from Firestore">
-              <span style={{ width: '100%', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px', paddingLeft: '8px' }}>
+              <span className="suggestions-label">
                 🌟 Trending Community Questions
               </span>
               {communityQuestions.map((s, i) => (
-                <button key={`comm-${i}`} className="suggestion-chip" onClick={() => handleSend(s)} type="button" style={{ borderColor: 'var(--saffron)' }}>
+                <button 
+                  key={`comm-${i}`} 
+                  className="suggestion-chip trending" 
+                  onClick={() => handleSend(s)} 
+                  type="button"
+                >
                   {s}
                 </button>
               ))}

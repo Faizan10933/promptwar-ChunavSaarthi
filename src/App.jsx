@@ -74,17 +74,7 @@ function AppLayout() {
             </NavLink>
           ))}
         </nav>
-        <div
-          style={{
-            marginTop: 'auto',
-            padding: '16px',
-            background: 'var(--bg-glass)',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '0.75rem',
-            color: 'var(--text-muted)',
-            lineHeight: '1.5',
-          }}
-        >
+        <div className="sidebar-footer">
           <div id="google_translate_element" style={{ marginBottom: '12px' }}></div>
           <strong style={{ color: 'var(--saffron)' }}>Powered by</strong>
           <br />

@@ -48,7 +48,7 @@ describe('EVMSimulatorPage', () => {
     
     // Slip should be hidden
     const slip = screen.getByText(/Verify your vote/i).parentElement.querySelector('.vvpat-slip');
-    expect(slip).toHaveStyle('display: none');
+    expect(slip).toHaveClass('hide');
   });
 
   it('resets the simulator when "Try Again" is clicked', () => {

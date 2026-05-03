@@ -5,6 +5,7 @@
  */
  
 import { useState } from 'react';
+import { usePageView } from '../hooks/usePageView';
 import { ELECTION_MYTHS } from '../constants';
  
 /**
@@ -14,6 +15,9 @@ import { ELECTION_MYTHS } from '../constants';
 const MythBusterPage = () => {
   // Store expanded state as a record where key is index and value is boolean
   const [expanded, setExpanded] = useState({});
+
+  // Track page view via custom hook
+  usePageView('Myth Buster');
 
   /**
    * Toggles the expanded state of a specific myth card.
@@ -44,7 +48,6 @@ const MythBusterPage = () => {
                 className={`glass-card myth-card ${isExpanded ? 'expanded' : ''}`}
                 onClick={() => toggle(i)}
                 aria-expanded={isExpanded}
-                style={{ width: '100%', textAlign: 'left', font: 'inherit', color: 'inherit' }}
               >
                 <span className="myth-label">Myth</span>
                 <h3>&quot;{item.myth}&quot;</h3>
@@ -56,7 +59,7 @@ const MythBusterPage = () => {
                 )}
 
                 <div className="myth-truth" aria-hidden={!isExpanded}>
-                  <strong style={{ color: 'var(--green)', display: 'block', marginBottom: '8px' }}>
+                  <strong className="truth-title">
                     ✅ The Truth:
                   </strong>
                   {item.truth}

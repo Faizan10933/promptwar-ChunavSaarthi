@@ -4,22 +4,24 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
+import { usePageView } from '../hooks/usePageView';
+import { Spinner } from '../components/UI';
 import { loadGoogleMaps, MOCK_BOOTHS } from '../lib/maps';
-import { trackEvent } from '../lib/firebase';
 
 /**
  * Interactive Polling Booth Locator page.
  * Uses Google Maps API to display nearby stations and user location.
- * @returns {React.ReactElement} The Booth Locator page.
+ * @returns {React.ReactElement} The BoothLocatorPage component.
  */
 const BoothLocatorPage = () => {
   const mapRef = useRef(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Track page view via custom hook
+  usePageView('Booth Locator');
+
   useEffect(() => {
-    trackEvent('page_view', { page_title: 'Booth Locator' });
-    
     const init = async () => {
       try {
         await loadGoogleMaps();
@@ -92,29 +94,10 @@ const BoothLocatorPage = () => {
         search by location to verify your booth details.
       </p>
 
-      <div
-        className="glass-card"
-        style={{
-          height: '500px',
-          width: '100%',
-          overflow: 'hidden',
-          position: 'relative',
-          padding: 0,
-        }}
-      >
+      <div className="booth-map-container">
         {loading && (
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'rgba(0,0,0,0.5)',
-              zIndex: 10,
-            }}
-          >
-            <div className="spinner" />
+          <div className="booth-loading-overlay">
+            <Spinner size="md" />
           </div>
         )}
         {error && (
