@@ -17,12 +17,19 @@ export default defineConfig({
   build: {
     target: 'esnext',
     cssMinify: true,
+    reportCompressedSize: false,
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('@google/genai')) {
+            if (id.includes('@google/genai') || id.includes('@google/generative-ai')) {
               return 'ai';
+            }
+            if (id.includes('firebase')) {
+              return 'firebase';
+            }
+            if (id.includes('react')) {
+              return 'react-core';
             }
             return 'vendor';
           }
