@@ -4,7 +4,7 @@
  * @module pages/AskSaarthiPage
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { chatWithSaarthi, isAPIKeyConfigured } from '../lib/gemini';
 import { logToFirestore, trackEvent } from '../lib/firebase';
 import { CHAT_SUGGESTIONS } from '../constants';
@@ -43,7 +43,7 @@ const AskSaarthiPage = () => {
     if (msg.feedbackGiven) return;
 
     // Mark locally to prevent multiple votes
-    setMessages(prev => {
+    setMessages((prev) => {
       const newMsgs = [...prev];
       newMsgs[messageIndex] = { ...msg, feedbackGiven: true };
       return newMsgs;
@@ -102,29 +102,59 @@ const AskSaarthiPage = () => {
   return (
     <div className="chat-page">
       <div className="chat-header">
-        <h1><span aria-hidden="true">🤖</span> Ask Saarthi AI</h1>
+        <h1>
+          <span aria-hidden="true">🤖</span> Ask Saarthi AI
+        </h1>
         <p>Your AI-powered Indian Election expert • Powered by Google Gemini</p>
       </div>
 
       {!hasKey && (
         <div className="api-banner" role="alert" style={{ margin: '16px 32px 0' }}>
-          ⚠️ Set your Gemini API key: Create a <code>.env</code> file with <code>VITE_GEMINI_API_KEY=your_key</code>
+          ⚠️ Set your Gemini API key: Create a <code>.env</code> file with{' '}
+          <code>VITE_GEMINI_API_KEY=your_key</code>
         </div>
       )}
 
       <div className="chat-messages" aria-live="polite">
         {messages.map((m, i) => (
-          <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
-            <div className={`chat-bubble ${m.role}`}>
-              {m.text}
-            </div>
+          <div
+            key={i}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: m.role === 'user' ? 'flex-end' : 'flex-start',
+            }}
+          >
+            <div className={`chat-bubble ${m.role}`}>{m.text}</div>
             {m.role === 'assistant' && i > 0 && !m.text.includes('⚠️ Error') && (
-              <div style={{ marginTop: '6px', display: 'flex', gap: '8px', fontSize: '0.75rem', paddingLeft: '8px' }}>
+              <div
+                style={{
+                  marginTop: '6px',
+                  display: 'flex',
+                  gap: '8px',
+                  fontSize: '0.75rem',
+                  paddingLeft: '8px',
+                }}
+              >
                 {!m.feedbackGiven ? (
                   <>
                     <span style={{ color: 'var(--text-muted)' }}>Was this helpful?</span>
-                    <button onClick={() => handleFeedback(i, true)} style={{ background: 'none', border: 'none', cursor: 'pointer' }} type="button" aria-label="Helpful">👍</button>
-                    <button onClick={() => handleFeedback(i, false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }} type="button" aria-label="Not helpful">👎</button>
+                    <button
+                      onClick={() => handleFeedback(i, true)}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                      type="button"
+                      aria-label="Helpful"
+                    >
+                      👍
+                    </button>
+                    <button
+                      onClick={() => handleFeedback(i, false)}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                      type="button"
+                      aria-label="Not helpful"
+                    >
+                      👎
+                    </button>
                   </>
                 ) : (
                   <span style={{ color: 'var(--text-muted)' }}>Thanks for the feedback!</span>
@@ -134,7 +164,10 @@ const AskSaarthiPage = () => {
           </div>
         ))}
         {loading && (
-          <div className="chat-bubble assistant" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div
+            className="chat-bubble assistant"
+            style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+          >
             <span className="spinner" aria-hidden="true" /> Saarthi is thinking...
           </div>
         )}
@@ -144,12 +177,7 @@ const AskSaarthiPage = () => {
       {messages.length <= 1 && (
         <div className="chat-suggestions" aria-label="Suggested questions">
           {CHAT_SUGGESTIONS.map((s, i) => (
-            <button
-              key={i}
-              className="suggestion-chip"
-              onClick={() => handleSend(s)}
-              type="button"
-            >
+            <button key={i} className="suggestion-chip" onClick={() => handleSend(s)} type="button">
               {s}
             </button>
           ))}
@@ -157,7 +185,9 @@ const AskSaarthiPage = () => {
       )}
 
       <form className="chat-input-area" onSubmit={handleSubmit}>
-        <label htmlFor="chat-input" className="visually-hidden">Ask Saarthi a question</label>
+        <label htmlFor="chat-input" className="visually-hidden">
+          Ask Saarthi a question
+        </label>
         <input
           id="chat-input"
           className="chat-input"

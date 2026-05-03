@@ -61,9 +61,7 @@ class ErrorBoundary extends Component {
             color: 'var(--text-primary)',
           }}
         >
-          <h2 style={{ marginBottom: '16px', color: 'var(--saffron)' }}>
-            ⚠️ Something went wrong
-          </h2>
+          <h2 style={{ marginBottom: '16px', color: 'var(--saffron)' }}>⚠️ Something went wrong</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>
             {this.state.error?.message || 'An unexpected error occurred.'}
           </p>

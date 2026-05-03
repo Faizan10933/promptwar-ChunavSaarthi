@@ -4,7 +4,7 @@
  * @module pages/EVMSimulatorPage
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAudio } from '../hooks/useAudio';
 import { EVM_CANDIDATES, VVPAT_DISPLAY_MS } from '../constants';
 
@@ -55,8 +55,9 @@ const EVMSimulatorPage = () => {
         <span aria-hidden="true">🗳️</span> EVM Simulator
       </h1>
       <p className="page-subtitle">
-        Experience casting a vote on India's Electronic Voting Machine. Press the blue button
-        next to your chosen candidate. The VVPAT machine will print a verification slip visible for 7 seconds.
+        Experience casting a vote on India&apos;s Electronic Voting Machine. Press the blue button
+        next to your chosen candidate. The VVPAT machine will print a verification slip visible for
+        7 seconds.
       </p>
 
       <div className="evm-wrapper">
@@ -66,14 +67,19 @@ const EVMSimulatorPage = () => {
             {EVM_CANDIDATES.map((c) => (
               <div key={c.id} className="evm-row">
                 <div className="evm-candidate">
-                  <div className="evm-symbol" aria-hidden="true">{c.symbol}</div>
+                  <div className="evm-symbol" aria-hidden="true">
+                    {c.symbol}
+                  </div>
                   <div>
                     <div className="evm-name">{c.name}</div>
                     <div className="evm-party">{c.party}</div>
                   </div>
                 </div>
                 <div className="evm-controls">
-                  <div className={`evm-light ${votedFor === c.id ? 'active' : ''}`} aria-hidden="true" />
+                  <div
+                    className={`evm-light ${votedFor === c.id ? 'active' : ''}`}
+                    aria-hidden="true"
+                  />
                   <button
                     className="evm-btn"
                     onClick={() => handleVote(c)}
@@ -98,7 +104,9 @@ const EVMSimulatorPage = () => {
                 aria-live="assertive"
               >
                 <span className="slip-serial">S.No: {slipData.id}</span>
-                <span className="slip-symbol" aria-hidden="true">{slipData.symbol}</span>
+                <span className="slip-symbol" aria-hidden="true">
+                  {slipData.symbol}
+                </span>
                 <span className="slip-name">{slipData.name}</span>
               </div>
             )}
@@ -110,8 +118,9 @@ const EVMSimulatorPage = () => {
         <div className="vote-success" role="alert">
           <h2>✅ Vote Cast Successfully!</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
-            You voted for <strong>{slipData?.name}</strong>. In a real election, the VVPAT slip drops
-            into a sealed box for audit purposes. Your vote is now securely recorded in the EVM's control unit.
+            You voted for <strong>{slipData?.name}</strong>. In a real election, the VVPAT slip
+            drops into a sealed box for audit purposes. Your vote is now securely recorded in the
+            EVM&apos;s control unit.
           </p>
           <button className="btn-secondary" onClick={resetSimulator} type="button">
             Try Again

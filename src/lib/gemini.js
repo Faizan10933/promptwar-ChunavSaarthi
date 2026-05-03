@@ -164,7 +164,7 @@ export async function checkMCCViolation(scenario) {
       if (jsonMatch) {
         return JSON.parse(jsonMatch[0]);
       }
-    } catch (_parseError) {
+    } catch {
       // JSON parsing failed — return raw text as explanation
     }
 

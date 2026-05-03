@@ -16,7 +16,7 @@ describe('useAudio Hook', () => {
     const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
     const { result } = renderHook(() => useAudio());
-    
+
     // Should not throw, should just console.warn
     expect(() => result.current.playBeep()).not.toThrow();
     expect(consoleSpy).toHaveBeenCalled();

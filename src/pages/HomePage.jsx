@@ -4,7 +4,6 @@
  * @module pages/HomePage
  */
 
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { ELECTION_STATS } from '../constants';
 
@@ -20,7 +19,8 @@ const HomePage = () => {
       </div>
 
       <h1 className="hero-title">
-        Understand India's<br />
+        Understand India&apos;s
+        <br />
         <span className="highlight">Election Process</span>
       </h1>
 
@@ -49,27 +49,47 @@ const HomePage = () => {
 
       <div className="features-grid">
         <Link to="/ask" className="glass-card feature-card">
-          <span className="feature-icon" aria-hidden="true">🤖</span>
+          <span className="feature-icon" aria-hidden="true">
+            🤖
+          </span>
           <h3>Ask Saarthi AI</h3>
-          <p>Ask any question about Indian elections. Powered by Google Gemini AI — get instant, accurate answers.</p>
+          <p>
+            Ask any question about Indian elections. Powered by Google Gemini AI — get instant,
+            accurate answers.
+          </p>
         </Link>
 
         <Link to="/mcc" className="glass-card feature-card">
-          <span className="feature-icon" aria-hidden="true">⚖️</span>
+          <span className="feature-icon" aria-hidden="true">
+            ⚖️
+          </span>
           <h3>MCC Violation Checker</h3>
-          <p>Describe a scenario and AI will analyze if it violates the Model Code of Conduct. Learn how to report via cVIGIL.</p>
+          <p>
+            Describe a scenario and AI will analyze if it violates the Model Code of Conduct. Learn
+            how to report via cVIGIL.
+          </p>
         </Link>
 
         <Link to="/myths" className="glass-card feature-card">
-          <span className="feature-icon" aria-hidden="true">🔍</span>
+          <span className="feature-icon" aria-hidden="true">
+            🔍
+          </span>
           <h3>Myth Buster</h3>
-          <p>Common election myths debunked with facts. From EVM hacking claims to NOTA misconceptions.</p>
+          <p>
+            Common election myths debunked with facts. From EVM hacking claims to NOTA
+            misconceptions.
+          </p>
         </Link>
 
         <Link to="/evm" className="glass-card feature-card">
-          <span className="feature-icon" aria-hidden="true">🗳️</span>
+          <span className="feature-icon" aria-hidden="true">
+            🗳️
+          </span>
           <h3>EVM Simulator</h3>
-          <p>Experience casting a vote on a realistic Indian Electronic Voting Machine with VVPAT verification.</p>
+          <p>
+            Experience casting a vote on a realistic Indian Electronic Voting Machine with VVPAT
+            verification.
+          </p>
         </Link>
       </div>
     </div>

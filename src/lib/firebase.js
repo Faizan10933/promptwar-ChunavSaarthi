@@ -45,21 +45,21 @@ try {
 /**
  * Safely writes a document to Firestore. If Firebase is not configured,
  * it mocks the write and logs to the console to prevent app crashes.
- * 
+ *
  * @param {string} collectionName - Name of the Firestore collection
  * @param {Object} data - The payload to save
  * @returns {Promise<string>} The ID of the created document (or a mock ID)
  */
 export const logToFirestore = async (collectionName, data) => {
   if (!isFirebaseConfigured() || !db) {
-    console.log(`[Mock Firestore] Saved to '${collectionName}':`, data);
+    console.info(`[Mock Firestore] Saved to '${collectionName}':`, data);
     return 'mock-doc-id-' + Date.now();
   }
 
   try {
     const docRef = await addDoc(collection(db, collectionName), {
       ...data,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
     return docRef.id;
   } catch (error) {
@@ -70,13 +70,13 @@ export const logToFirestore = async (collectionName, data) => {
 
 /**
  * Safely logs an event to Firebase Analytics.
- * 
+ *
  * @param {string} eventName - Name of the event
  * @param {Object} [params] - Optional parameters
  */
 export const trackEvent = (eventName, params = {}) => {
   if (!isFirebaseConfigured() || !analytics) {
-    console.log(`[Mock Analytics] Tracked event '${eventName}':`, params);
+    console.info(`[Mock Analytics] Tracked event '${eventName}':`, params);
     return;
   }
 

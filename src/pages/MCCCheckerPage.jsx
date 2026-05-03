@@ -4,7 +4,7 @@
  * @module pages/MCCCheckerPage
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { checkMCCViolation, isAPIKeyConfigured } from '../lib/gemini';
 import { logToFirestore, trackEvent } from '../lib/firebase';
 import { MCC_EXAMPLES } from '../constants';
@@ -37,7 +37,7 @@ const MCCCheckerPage = () => {
       const res = await checkMCCViolation(scenario);
       setResult(res);
       trackEvent('mcc_check_success', { is_violation: res.is_violation });
-      
+
       // Automatically log the checked scenario to Firestore for analytics
       await logToFirestore('mcc_reports', {
         scenario_description: scenario,
@@ -75,18 +75,21 @@ const MCCCheckerPage = () => {
         <span aria-hidden="true">⚖️</span> MCC Violation Checker
       </h1>
       <p className="page-subtitle">
-        Describe a real-world scenario and our AI will analyze whether it violates the
-        Election Commission's Model Code of Conduct. Learn your rights as a citizen.
+        Describe a real-world scenario and our AI will analyze whether it violates the Election
+        Commission&apos;s Model Code of Conduct. Learn your rights as a citizen.
       </p>
 
       {!hasKey && (
         <div className="api-banner" role="alert">
-          ⚠️ Set your Gemini API key: Create a <code>.env</code> file with <code>VITE_GEMINI_API_KEY=your_key</code>
+          ⚠️ Set your Gemini API key: Create a <code>.env</code> file with{' '}
+          <code>VITE_GEMINI_API_KEY=your_key</code>
         </div>
       )}
 
       <div className="glass-card" style={{ padding: '28px', marginBottom: '24px' }}>
-        <label htmlFor="scenario-input" className="visually-hidden">Describe a scenario</label>
+        <label htmlFor="scenario-input" className="visually-hidden">
+          Describe a scenario
+        </label>
         <textarea
           id="scenario-input"
           className="mcc-textarea"
@@ -96,7 +99,15 @@ const MCCCheckerPage = () => {
           aria-label="Scenario description"
         />
 
-        <div style={{ marginTop: '16px', display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div
+          style={{
+            marginTop: '16px',
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
           <button
             className="btn-primary"
             onClick={handleCheck}
@@ -112,7 +123,9 @@ const MCCCheckerPage = () => {
               'Analyze Scenario'
             )}
           </button>
-          <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>or try an example:</span>
+          <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+            or try an example:
+          </span>
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '12px' }}>
@@ -133,8 +146,19 @@ const MCCCheckerPage = () => {
       </div>
 
       {result && !result.error && (
-        <div className={`mcc-result ${result.is_violation ? 'violation' : 'no-violation'}`} role="region" aria-live="polite">
-          <h3 style={{ color: result.is_violation ? 'var(--red)' : 'var(--green)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div
+          className={`mcc-result ${result.is_violation ? 'violation' : 'no-violation'}`}
+          role="region"
+          aria-live="polite"
+        >
+          <h3
+            style={{
+              color: result.is_violation ? 'var(--red)' : 'var(--green)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}
+          >
             {result.is_violation ? '🚨 MCC Violation Detected' : '✅ No Violation Found'}
             {result.confidence && (
               <span
@@ -163,7 +187,11 @@ const MCCCheckerPage = () => {
         <div
           className="api-banner"
           role="alert"
-          style={{ background: 'rgba(239,68,68,0.08)', borderColor: 'rgba(239,68,68,0.2)', color: 'var(--red)' }}
+          style={{
+            background: 'rgba(239,68,68,0.08)',
+            borderColor: 'rgba(239,68,68,0.2)',
+            color: 'var(--red)',
+          }}
         >
           ⚠️ Error: {result.error}
         </div>

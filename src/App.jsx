@@ -4,7 +4,7 @@
  * @module App
  */
 
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import { NAV_ITEMS } from './constants';
@@ -21,12 +21,20 @@ const EVMSimulatorPage = lazy(() => import('./pages/EVMSimulatorPage'));
  * @returns {React.ReactElement} Loading spinner component.
  */
 const PageLoader = () => (
-  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', flexDirection: 'column', gap: '16px' }}>
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+      flexDirection: 'column',
+      gap: '16px',
+    }}
+  >
     <div className="spinner" style={{ width: '40px', height: '40px', borderWidth: '4px' }}></div>
     <div style={{ color: 'var(--text-secondary)' }}>Loading Saarthi...</div>
   </div>
 );
-
 
 /**
  * Main application layout component containing the sidebar and content area.
@@ -51,7 +59,9 @@ function AppLayout() {
               end={item.path === '/'}
               aria-current={location.pathname === item.path ? 'page' : undefined}
             >
-              <span className="nav-icon" aria-hidden="true">{item.icon}</span>
+              <span className="nav-icon" aria-hidden="true">
+                {item.icon}
+              </span>
               {item.label}
             </NavLink>
           ))}

@@ -4,7 +4,7 @@
  * @module pages/MythBusterPage
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ELECTION_MYTHS } from '../constants';
 
 /**
@@ -29,47 +29,39 @@ const MythBusterPage = () => {
         <span aria-hidden="true">🔍</span> Election Myth Buster
       </h1>
       <p className="page-subtitle">
-        Misinformation weakens democracy. Click on any myth below to see the factual truth
-        backed by ECI rules and Indian law.
+        Misinformation weakens democracy. Click on any myth below to see the factual truth backed by
+        ECI rules and Indian law.
       </p>
 
       <div className="myths-grid" role="list">
         {ELECTION_MYTHS.map((item, i) => {
           const isExpanded = !!expanded[i];
-          
+
           return (
-            <div
-              key={i}
-              role="listitem"
-              className={`glass-card myth-card ${isExpanded ? 'expanded' : ''}`}
-              onClick={() => toggle(i)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  toggle(i);
-                }
-              }}
-              tabIndex={0}
-              aria-expanded={isExpanded}
-            >
-              <span className="myth-label">Myth</span>
-              <h3>"{item.myth}"</h3>
-              
-              {!isExpanded && (
-                <p className="click-hint" aria-hidden="true">
-                  Click to reveal the truth →
-                </p>
-              )}
-              
-              <div 
-                className="myth-truth"
-                aria-hidden={!isExpanded}
+            <div key={i} role="listitem">
+              <button
+                type="button"
+                className={`glass-card myth-card ${isExpanded ? 'expanded' : ''}`}
+                onClick={() => toggle(i)}
+                aria-expanded={isExpanded}
+                style={{ width: '100%', textAlign: 'left', font: 'inherit', color: 'inherit' }}
               >
-                <strong style={{ color: 'var(--green)', display: 'block', marginBottom: '8px' }}>
-                  ✅ The Truth:
-                </strong>
-                {item.truth}
-              </div>
+                <span className="myth-label">Myth</span>
+                <h3>&quot;{item.myth}&quot;</h3>
+
+                {!isExpanded && (
+                  <p className="click-hint" aria-hidden="true">
+                    Click to reveal the truth →
+                  </p>
+                )}
+
+                <div className="myth-truth" aria-hidden={!isExpanded}>
+                  <strong style={{ color: 'var(--green)', display: 'block', marginBottom: '8px' }}>
+                    ✅ The Truth:
+                  </strong>
+                  {item.truth}
+                </div>
+              </button>
             </div>
           );
         })}
