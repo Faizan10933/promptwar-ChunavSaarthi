@@ -87,4 +87,44 @@ describe('AskSaarthiPage', () => {
       expect(screen.getByText(/⚠️ Error: API Failure/)).toBeInTheDocument();
     });
   });
+
+  it('handles negative feedback clicks', async () => {
+    render(<AskSaarthiPage />);
+    
+    // Send a message first
+    const input = screen.getByPlaceholderText(/Ask anything/);
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'Hi' } });
+      fireEvent.click(screen.getByText('Send'));
+    });
+
+    await waitFor(() => screen.getByText('Mocked Response'));
+
+    const unhelpfulBtn = screen.getByLabelText('Not helpful');
+    await act(async () => {
+      fireEvent.click(unhelpfulBtn);
+    });
+
+    expect(firebase.logToFirestore).toHaveBeenCalledWith('chat_feedback', expect.objectContaining({
+      isHelpful: false
+    }));
+    expect(screen.getByText('Thanks for the feedback!')).toBeInTheDocument();
+  });
+
+  it('handles community question clicks', async () => {
+    render(<AskSaarthiPage />);
+    
+    // Wait for simulated community questions to appear
+    await waitFor(() => screen.getByText(/Trending Community Questions/i));
+    
+    const question = screen.getByText('How to check voter list?');
+    await act(async () => {
+      fireEvent.click(question);
+    });
+
+    expect(screen.getByText('How to check voter list?')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Mocked Response')).toBeInTheDocument();
+    });
+  });
 });

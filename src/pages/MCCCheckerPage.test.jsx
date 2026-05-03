@@ -80,4 +80,21 @@ describe('MCCCheckerPage', () => {
       expect(screen.getByText(/⚠️ Error: Analysis Failed/i)).toBeInTheDocument();
     });
   });
+
+  it('displays "No Violation Found" when appropriate', async () => {
+    vi.mocked(gemini.checkMCCViolation).mockResolvedValueOnce({
+      is_violation: false,
+      explanation: 'All good'
+    });
+    
+    render(<MCCCheckerPage />);
+    const textarea = screen.getByPlaceholderText(/Describe a scenario/i);
+    fireEvent.change(textarea, { target: { value: 'Valid scenario' } });
+    fireEvent.click(screen.getByRole('button', { name: /Analyze Scenario/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/✅ No Violation Found/i)).toBeInTheDocument();
+      expect(screen.getByText('All good')).toBeInTheDocument();
+    });
+  });
 });

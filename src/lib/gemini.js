@@ -118,12 +118,10 @@ export async function chatWithSaarthi(userMessage, chatHistory = []) {
       { role: 'user', parts: [{ text: userMessage }] },
     ];
 
-    const response = await client.models.generateContent({
-      model: modelName,
-      contents,
-    });
-
-    return response.text;
+    const model = client.getGenerativeModel({ model: modelName });
+    const result = await model.generateContent({ contents });
+    const response = await result.response;
+    return response.text();
   });
 }
 
@@ -151,12 +149,10 @@ export async function checkMCCViolation(scenario) {
   return callWithFallback(async (modelName) => {
     const prompt = `${MCC_SYSTEM_PROMPT}\n\nAnalyze: "${scenario}"`;
 
-    const response = await client.models.generateContent({
-      model: modelName,
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    });
-
-    const text = response.text;
+    const model = client.getGenerativeModel({ model: modelName });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
     // Parse the JSON from the response
     try {

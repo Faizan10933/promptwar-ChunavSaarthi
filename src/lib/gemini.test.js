@@ -3,16 +3,18 @@ import { chatWithSaarthi, checkMCCViolation, isAPIKeyConfigured } from './gemini
 
 // Mock the environment variables BEFORE module import via vi.mock
 const mockGenerateContent = vi.fn().mockResolvedValue({
-  text: 'Mocked AI Response',
+  response: {
+    text: () => 'Mocked AI Response',
+  },
 });
 
 vi.mock('@google/genai', () => {
   return {
     GoogleGenAI: class {
       constructor() {
-        this.models = {
+        this.getGenerativeModel = () => ({
           generateContent: mockGenerateContent,
-        };
+        });
       }
     },
   };
@@ -24,7 +26,9 @@ describe('Gemini Library', () => {
     vi.clearAllMocks();
     mockGenerateContent.mockReset();
     mockGenerateContent.mockResolvedValue({
-      text: 'Mocked AI Response',
+      response: {
+        text: () => 'Mocked AI Response',
+      },
     });
   });
 
@@ -37,6 +41,16 @@ describe('Gemini Library', () => {
     const history = [{ role: 'assistant', text: 'Prev' }, { role: 'user', text: 'Next' }];
     const response = await chatWithSaarthi('Hello', history);
     expect(response).toBe('Mocked AI Response');
+  });
+
+  it('handles response.text as a function', async () => {
+    mockGenerateContent.mockResolvedValueOnce({
+      response: {
+        text: () => 'Function Response',
+      },
+    });
+    const response = await chatWithSaarthi('Trigger function text');
+    expect(response).toBe('Function Response');
   });
 
   it('handles model fallback correctly', async () => {
@@ -66,7 +80,9 @@ describe('Gemini Library', () => {
 
   it('checkMCCViolation handles valid JSON response', async () => {
     mockGenerateContent.mockResolvedValueOnce({
-      text: '{"is_violation":true,"explanation":"Test"}',
+      response: {
+        text: () => '{"is_violation":true,"explanation":"Test"}',
+      },
     });
     
     const response = await checkMCCViolation('Valid JSON scenario');
