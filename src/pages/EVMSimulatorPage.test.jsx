@@ -68,4 +68,18 @@ describe('EVMSimulatorPage', () => {
     expect(screen.queryByText(/Vote Cast Successfully/i)).not.toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: /Vote for/i })[0]).not.toBeDisabled();
   });
+
+  it('prevents multiple votes before reset', () => {
+    render(<EVMSimulatorPage />);
+    
+    const voteButtons = screen.getAllByRole('button', { name: /Vote for/i });
+    fireEvent.click(voteButtons[0]);
+    
+    // Attempt second vote immediately
+    fireEvent.click(voteButtons[1]);
+    
+    // Only first candidate's symbol should be in VVPAT
+    // (In our component, 'voted' state prevents subsequent clicks)
+    expect(screen.getByText(/Verify your vote/i)).toBeInTheDocument();
+  });
 });

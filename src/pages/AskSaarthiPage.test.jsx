@@ -127,4 +127,22 @@ describe('AskSaarthiPage', () => {
       expect(screen.getByText('Mocked Response')).toBeInTheDocument();
     });
   });
+
+  it('renders warning banner when API key is missing', () => {
+    gemini.isAPIKeyConfigured.mockReturnValueOnce(false);
+    render(<AskSaarthiPage />);
+    expect(screen.getByText(/Set your Gemini API key/i)).toBeInTheDocument();
+  });
+
+  it('handles firestore fetch error', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    firebase.logToFirestore.mockRejectedValueOnce(new Error('Firestore Error'));
+    
+    render(<AskSaarthiPage />);
+    
+    await waitFor(() => {
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Failed to fetch community questions'), expect.any(Error));
+    });
+    consoleSpy.mockRestore();
+  });
 });

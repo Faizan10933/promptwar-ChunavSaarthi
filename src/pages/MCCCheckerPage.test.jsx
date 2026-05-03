@@ -33,7 +33,10 @@ describe('MCCCheckerPage', () => {
 
   it('does not submit when scenario is empty', async () => {
     render(<MCCCheckerPage />);
+    const textarea = screen.getByPlaceholderText(/Describe a scenario/i);
     const analyzeButton = screen.getByRole('button', { name: /Analyze Scenario/i });
+    
+    fireEvent.change(textarea, { target: { value: '   ' } }); // Whitespace only
     fireEvent.click(analyzeButton);
     expect(gemini.checkMCCViolation).not.toHaveBeenCalled();
   });
@@ -96,5 +99,11 @@ describe('MCCCheckerPage', () => {
       expect(screen.getByText(/No Violation Found/i)).toBeInTheDocument();
       expect(screen.getByText('All good')).toBeInTheDocument();
     });
+  });
+
+  it('renders warning banner when API key is missing', () => {
+    vi.mocked(gemini.isAPIKeyConfigured).mockReturnValueOnce(false);
+    render(<MCCCheckerPage />);
+    expect(screen.getByText(/Set your Gemini API key/i)).toBeInTheDocument();
   });
 });

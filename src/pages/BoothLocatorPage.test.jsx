@@ -126,6 +126,43 @@ describe('BoothLocatorPage', () => {
     expect(mockMap.setCenter).toHaveBeenCalled();
   });
 
+  it('handles autocomplete without geometry', async () => {
+    let placeChangedCallback;
+    mockAutocomplete.mockImplementation(function() {
+      return {
+        bindTo: vi.fn(),
+        addListener: vi.fn((event, cb) => {
+          if (event === 'place_changed') placeChangedCallback = cb;
+        }),
+        getPlace: vi.fn().mockReturnValue({}) // No geometry
+      };
+    });
+
+    render(<BoothLocatorPage />);
+    await waitFor(() => expect(placeChangedCallback).toBeDefined());
+    placeChangedCallback();
+    expect(mockMap.fitBounds).not.toHaveBeenCalled();
+  });
+
+  it('handles autocomplete with geometry but no location', async () => {
+    let placeChangedCallback;
+    mockAutocomplete.mockImplementation(function() {
+      return {
+        bindTo: vi.fn(),
+        addListener: vi.fn((event, cb) => {
+          if (event === 'place_changed') placeChangedCallback = cb;
+        }),
+        getPlace: vi.fn().mockReturnValue({ geometry: {} }) // No location
+      };
+    });
+
+    render(<BoothLocatorPage />);
+    await waitFor(() => expect(placeChangedCallback).toBeDefined());
+    placeChangedCallback();
+    // Should only have been called once during initial load (geolocation success)
+    expect(mockMap.setCenter).toHaveBeenCalledTimes(1);
+  });
+
   it('handles geolocation failure', async () => {
     mockGeolocation.getCurrentPosition.mockImplementationOnce((success, error) => error());
     

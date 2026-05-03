@@ -20,6 +20,17 @@ vi.mock('@google/genai', () => {
   };
 });
 
+vi.mock('./firebase', () => ({
+  perf: { mockPerf: true },
+}));
+
+vi.mock('firebase/performance', () => ({
+  trace: vi.fn(() => ({
+    start: vi.fn(),
+    stop: vi.fn(),
+  })),
+}));
+
 describe('Gemini Library', () => {
   beforeEach(() => {
     // Reset env vars and module state if needed
