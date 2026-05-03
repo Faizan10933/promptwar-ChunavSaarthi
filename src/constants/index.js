@@ -16,6 +16,7 @@ export const NAV_ITEMS = [
   { path: '/mcc', icon: '⚖️', label: 'MCC Checker' },
   { path: '/myths', icon: '🔍', label: 'Myth Buster' },
   { path: '/evm', icon: '🗳️', label: 'EVM Simulator' },
+  { path: '/booths', icon: '📍', label: 'Booth Locator' },
 ];
 
 /**

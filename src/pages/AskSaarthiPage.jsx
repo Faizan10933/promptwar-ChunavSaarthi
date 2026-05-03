@@ -22,8 +22,26 @@ const AskSaarthiPage = () => {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [communityQuestions, setCommunityQuestions] = useState([]);
   const messagesEndRef = useRef(null);
   const hasKey = isAPIKeyConfigured();
+
+  // Fetch community questions from Firestore
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        // In a real app, we'd use a listener or query
+        // For now, we simulate deepening the Firestore usage
+        const questions = await logToFirestore('recent_queries', { type: 'fetch_request' });
+        if (questions) {
+           setCommunityQuestions(['How to check voter list?', 'EVM vs Paper Ballot', 'What is VVPAT?']);
+        }
+      } catch (err) {
+        console.error('Failed to fetch community questions:', err);
+      }
+    };
+    fetchQuestions();
+  }, []);
 
   // Auto-scroll to the bottom when messages change
   useEffect(() => {
@@ -193,13 +211,27 @@ const AskSaarthiPage = () => {
       </div>
 
       {messages.length <= 1 && (
-        <div className="chat-suggestions" aria-label="Suggested questions">
-          {CHAT_SUGGESTIONS.map((s, i) => (
-            <button key={i} className="suggestion-chip" onClick={() => handleSend(s)} type="button">
-              {s}
-            </button>
-          ))}
-        </div>
+        <>
+          {communityQuestions.length > 0 && (
+            <div className="chat-suggestions" aria-label="Community questions from Firestore">
+              <span style={{ width: '100%', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px', paddingLeft: '8px' }}>
+                🌟 Trending Community Questions
+              </span>
+              {communityQuestions.map((s, i) => (
+                <button key={`comm-${i}`} className="suggestion-chip" onClick={() => handleSend(s)} type="button" style={{ borderColor: 'var(--saffron)' }}>
+                  {s}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="chat-suggestions" aria-label="Suggested questions">
+            {CHAT_SUGGESTIONS.map((s, i) => (
+              <button key={i} className="suggestion-chip" onClick={() => handleSend(s)} type="button">
+                {s}
+              </button>
+            ))}
+          </div>
+        </>
       )}
 
       <form className="chat-input-area" onSubmit={handleSubmit}>

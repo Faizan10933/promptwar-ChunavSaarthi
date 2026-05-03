@@ -4,7 +4,7 @@
  * @module App
  */
 
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import { NAV_ITEMS } from './constants';
@@ -15,6 +15,7 @@ const AskSaarthiPage = lazy(() => import('./pages/AskSaarthiPage'));
 const MCCCheckerPage = lazy(() => import('./pages/MCCCheckerPage'));
 const MythBusterPage = lazy(() => import('./pages/MythBusterPage'));
 const EVMSimulatorPage = lazy(() => import('./pages/EVMSimulatorPage'));
+const BoothLocatorPage = lazy(() => import('./pages/BoothLocatorPage'));
 
 /**
  * Fallback UI shown while a lazy-loaded chunk is being downloaded.
@@ -36,12 +37,18 @@ const PageLoader = () => (
   </div>
 );
 
+import { initGoogleTranslate } from './lib/translate';
+
 /**
  * Main application layout component containing the sidebar and content area.
  * @returns {React.ReactElement} The layout wrapper.
  */
 function AppLayout() {
   const location = useLocation();
+
+  useEffect(() => {
+    initGoogleTranslate();
+  }, []);
 
   return (
     <div className="app-layout">
@@ -78,6 +85,7 @@ function AppLayout() {
             lineHeight: '1.5',
           }}
         >
+          <div id="google_translate_element" style={{ marginBottom: '12px' }}></div>
           <strong style={{ color: 'var(--saffron)' }}>Powered by</strong>
           <br />
           Google Gemini AI
@@ -93,6 +101,7 @@ function AppLayout() {
               <Route path="/mcc" element={<MCCCheckerPage />} />
               <Route path="/myths" element={<MythBusterPage />} />
               <Route path="/evm" element={<EVMSimulatorPage />} />
+              <Route path="/booths" element={<BoothLocatorPage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
