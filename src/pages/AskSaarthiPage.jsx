@@ -110,7 +110,9 @@ const AskSaarthiPage = () => {
       )}
 
       <form className="chat-input-area" onSubmit={handleSubmit}>
+        <label htmlFor="chat-input" className="visually-hidden">Ask Saarthi a question</label>
         <input
+          id="chat-input"
           className="chat-input"
           value={input}
           onChange={(e) => setInput(e.target.value)}

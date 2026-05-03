@@ -69,7 +69,9 @@ const MCCCheckerPage = () => {
       )}
 
       <div className="glass-card" style={{ padding: '28px', marginBottom: '24px' }}>
+        <label htmlFor="scenario-input" className="visually-hidden">Describe a scenario</label>
         <textarea
+          id="scenario-input"
           className="mcc-textarea"
           value={scenario}
           onChange={(e) => setScenario(e.target.value)}
