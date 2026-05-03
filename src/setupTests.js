@@ -18,18 +18,21 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+// Mock scrollIntoView as it's not implemented in JSDOM
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
 // Mock Firebase
 vi.mock('firebase/app', () => ({
   initializeApp: vi.fn(),
 }));
 
 vi.mock('firebase/firestore', () => ({
-  getFirestore: vi.fn(),
+  getFirestore: vi.fn().mockReturnValue({}),
   collection: vi.fn(),
   addDoc: vi.fn().mockResolvedValue({ id: 'mock-doc-id' }),
 }));
 
 vi.mock('firebase/analytics', () => ({
-  getAnalytics: vi.fn(),
+  getAnalytics: vi.fn().mockReturnValue({}),
   logEvent: vi.fn(),
 }));
