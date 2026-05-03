@@ -78,7 +78,7 @@ const VoterGuidePage = () => {
 
       <div className="voter-footer-cta glass-card">
         <h3>Still have questions?</h3>
-        <p>Ask our AI expert "Saarthi" for personalized answers about your specific situation.</p>
+        <p>Ask our AI expert &quot;Saarthi&quot; for personalized answers about your specific situation.</p>
         <Link to="/ask" className="btn-primary">
           Chat with Saarthi
         </Link>
