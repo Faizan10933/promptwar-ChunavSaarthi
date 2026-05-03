@@ -9,6 +9,8 @@ import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router
 import ErrorBoundary from './components/ErrorBoundary';
 import { NAV_ITEMS } from './constants';
 
+import { initGoogleTranslate } from './lib/translate';
+
 // Lazy loaded page components for optimal code splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
 const AskSaarthiPage = lazy(() => import('./pages/AskSaarthiPage'));
@@ -36,8 +38,6 @@ const PageLoader = () => (
     <div style={{ color: 'var(--text-secondary)' }}>Loading Saarthi...</div>
   </div>
 );
-
-import { initGoogleTranslate } from './lib/translate';
 
 /**
  * Main application layout component containing the sidebar and content area.

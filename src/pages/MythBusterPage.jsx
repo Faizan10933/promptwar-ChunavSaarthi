@@ -1,12 +1,12 @@
 /**
- * @fileoverview Election Myth Buster page.
+ * Election Myth Buster page.
  * Displays an interactive accordion of common election myths and their factual truths.
  * @module pages/MythBusterPage
  */
-
+ 
 import { useState } from 'react';
 import { ELECTION_MYTHS } from '../constants';
-
+ 
 /**
  * Component that renders interactive cards to debunk election misinformation.
  * @returns {React.ReactElement} The Myth Buster page.

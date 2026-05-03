@@ -50,6 +50,7 @@ export const loadGoogleMaps = () => {
 /**
  * Mock polling booth locations for demonstration.
  * In a production app, these would come from an ECI API or Firestore.
+ * @type {Array<{id: number, name: string, lat: number, lng: number, address: string}>}
  */
 export const MOCK_BOOTHS = [
   { id: 1, name: 'Goverment Primary School', lat: 28.6139, lng: 77.2090, address: 'Central Delhi, India' },

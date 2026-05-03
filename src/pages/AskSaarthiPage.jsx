@@ -8,6 +8,7 @@ import { useState, useRef, useEffect } from 'react';
 import { chatWithSaarthi, isAPIKeyConfigured } from '../lib/gemini';
 import { logToFirestore, trackEvent } from '../lib/firebase';
 import { CHAT_SUGGESTIONS } from '../constants';
+import ChatMessage from '../components/ChatMessage';
 
 /**
  * Chat interface component for the Saarthi AI.
@@ -135,78 +136,13 @@ const AskSaarthiPage = () => {
 
       <div className="chat-messages" aria-live="polite">
         {messages.map((m, i) => (
-          <div
+          <ChatMessage
             key={i}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: m.role === 'user' ? 'flex-end' : 'flex-start',
-            }}
-          >
-            <div className={`chat-bubble ${m.role}`}>{m.text}</div>
-            {m.role === 'assistant' && i > 0 && !m.text.includes('⚠️ Error') && (
-              <div
-                style={{
-                  marginTop: '6px',
-                  display: 'flex',
-                  gap: '8px',
-                  fontSize: '0.75rem',
-                  paddingLeft: '8px',
-                }}
-              >
-                {!m.feedbackGiven ? (
-                  <>
-                    <span style={{ color: 'var(--text-muted)' }}>Was this helpful?</span>
-                    <button
-                      onClick={() => handleFeedback(i, true)}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        minWidth: '44px',
-                        minHeight: '44px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      type="button"
-                      aria-label="Helpful"
-                    >
-                      👍
-                    </button>
-                    <button
-                      onClick={() => handleFeedback(i, false)}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        minWidth: '44px',
-                        minHeight: '44px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      type="button"
-                      aria-label="Not helpful"
-                    >
-                      👎
-                    </button>
-                  </>
-                ) : (
-                  <span style={{ color: 'var(--text-muted)' }}>Thanks for the feedback!</span>
-                )}
-              </div>
-            )}
-          </div>
+            message={m}
+            onFeedback={(isHelpful) => handleFeedback(i, isHelpful)}
+          />
         ))}
-        {loading && (
-          <div
-            className="chat-bubble assistant"
-            style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-          >
-            <span className="spinner" aria-hidden="true" /> Saarthi is thinking...
-          </div>
-        )}
+        {loading && <ChatMessage isLoading message={{ role: 'assistant', text: '' }} />}
         <div ref={messagesEndRef} />
       </div>
 

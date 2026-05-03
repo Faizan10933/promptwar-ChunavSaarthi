@@ -7,6 +7,11 @@ import { useEffect, useRef, useState } from 'react';
 import { loadGoogleMaps, MOCK_BOOTHS } from '../lib/maps';
 import { trackEvent } from '../lib/firebase';
 
+/**
+ * Interactive Polling Booth Locator page.
+ * Uses Google Maps API to display nearby stations and user location.
+ * @returns {React.ReactElement} The Booth Locator page.
+ */
 const BoothLocatorPage = () => {
   const mapRef = useRef(null);
   const [error, setError] = useState(null);
