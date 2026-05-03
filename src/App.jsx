@@ -33,7 +33,7 @@ function AppLayout() {
             <NavLink
               key={item.path}
               to={item.path}
-              className={({ isActive }) => \`\${isActive ? 'active' : ''}\`}
+              className={({ isActive }) => `${isActive ? 'active' : ''}`}
               end={item.path === '/'}
               aria-current={location.pathname === item.path ? 'page' : undefined}
             >

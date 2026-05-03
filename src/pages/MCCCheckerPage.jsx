@@ -114,7 +114,7 @@ const MCCCheckerPage = () => {
       </div>
 
       {result && !result.error && (
-        <div className={\`mcc-result \${result.is_violation ? 'violation' : 'no-violation'}\`} role="region" aria-live="polite">
+        <div className={`mcc-result ${result.is_violation ? 'violation' : 'no-violation'}`} role="region" aria-live="polite">
           <h3 style={{ color: result.is_violation ? 'var(--red)' : 'var(--green)', display: 'flex', alignItems: 'center', gap: '10px' }}>
             {result.is_violation ? '🚨 MCC Violation Detected' : '✅ No Violation Found'}
             {result.confidence && (

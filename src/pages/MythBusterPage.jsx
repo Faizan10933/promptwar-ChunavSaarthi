@@ -41,7 +41,7 @@ const MythBusterPage = () => {
             <div
               key={i}
               role="listitem"
-              className={\`glass-card myth-card \${isExpanded ? 'expanded' : ''}\`}
+              className={`glass-card myth-card ${isExpanded ? 'expanded' : ''}`}
               onClick={() => toggle(i)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {

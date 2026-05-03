@@ -16,7 +16,7 @@ const AskSaarthiPage = () => {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      text: 'Namaste! 🙏 I am Saarthi, your AI guide to Indian elections. Ask me anything — from voter registration to EVM technology, from MCC rules to counting procedures. I\\'m here to help!',
+      text: "Namaste! 🙏 I am Saarthi, your AI guide to Indian elections. Ask me anything — from voter registration to EVM technology, from MCC rules to counting procedures. I'm here to help!",
     },
   ]);
   const [input, setInput] = useState('');
@@ -50,7 +50,7 @@ const AskSaarthiPage = () => {
       const isQuota = err.message?.includes('429') || err.message?.includes('quota');
       const errorMessage = isQuota
         ? '⚠️ API quota exhausted for this key. To fix:\\n\\n1. Go to https://aistudio.google.com/apikey\\n2. Create a new API key\\n3. Update your .env file\\n4. Restart the dev server'
-        : \`⚠️ Error: \${err.message}\`;
+        : `⚠️ Error: ${err.message}`;
 
       setMessages((prev) => [...prev, { role: 'assistant', text: errorMessage }]);
     } finally {
@@ -82,7 +82,7 @@ const AskSaarthiPage = () => {
 
       <div className="chat-messages" aria-live="polite">
         {messages.map((m, i) => (
-          <div key={i} className={\`chat-bubble \${m.role}\`}>
+          <div key={i} className={`chat-bubble ${m.role}`}>
             {m.text}
           </div>
         ))}
