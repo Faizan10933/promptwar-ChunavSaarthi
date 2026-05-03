@@ -121,3 +121,29 @@ export const EVM_BEEP_DURATION_MS = 2000;
 
 /** @constant {number} EVM beep volume (0.0 to 1.0) */
 export const EVM_BEEP_VOLUME = 0.3;
+
+/**
+ * Election Timeline phases based on ECI standard procedures.
+ * @type {Array<{phase: string, duration: string, description: string}>}
+ */
+export const ELECTION_TIMELINE = [
+  { phase: 'Announcement', duration: 'Day 0', description: 'ECI announces dates; MCC comes into effect immediately.' },
+  { phase: 'Notification', duration: 'Day 7-14', description: 'President/Governor issues notification; Nominations begin.' },
+  { phase: 'Scrutiny', duration: 'Day 15', description: 'Returning Officer checks validity of all nomination papers.' },
+  { phase: 'Withdrawal', duration: 'Day 17', description: 'Last date for candidates to withdraw their names.' },
+  { phase: 'Campaigning', duration: 'Ongoing', description: 'Ends 48 hours before the start of polling (Silence Period).' },
+  { phase: 'Polling', duration: 'Scheduled', description: 'Voters cast votes at designated polling stations.' },
+  { phase: 'Counting', duration: 'Final Day', description: 'Votes counted and results declared by Returning Officer.' },
+];
+
+/**
+ * Step-by-step guide for voters to participate in the election process.
+ * @type {Array<{step: string, action: string, link?: string}>}
+ */
+export const VOTER_STEPS = [
+  { step: '1. Register', action: 'Submit Form 6 online via Voter Service Portal or BLO.', link: 'https://voters.eci.gov.in/' },
+  { step: '2. Verify', action: 'Search your name in the Electoral Roll to ensure you can vote.', link: 'https://electoralsearch.eci.gov.in/' },
+  { step: '3. Locate', action: 'Find your Polling Station and Part Number via EPIC or search.', link: '/booths' },
+  { step: '4. Vote', action: 'Carry EPIC or alternate ID. Follow the EVM/VVPAT process.', link: '/evm' },
+];
+

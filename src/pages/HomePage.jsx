@@ -5,7 +5,7 @@
  */
 
 import { Link } from 'react-router-dom';
-import { ELECTION_STATS } from '../constants';
+import { ELECTION_STATS, ELECTION_TIMELINE, VOTER_STEPS } from '../constants';
 
 /**
  * The homepage/dashboard component.
@@ -45,6 +45,55 @@ const HomePage = () => {
             <div className="stat-label">{stat.label}</div>
           </div>
         ))}
+      </div>
+
+      <div className="section-header" style={{ marginTop: '48px' }}>
+        <h2>Interactive Voter Journey</h2>
+        <p>Simple steps to exercise your democratic right</p>
+      </div>
+
+      <div className="voter-journey-grid">
+        {VOTER_STEPS.map((s, i) => (
+          <div key={i} className="glass-card journey-card">
+            <div className="step-badge">{s.step}</div>
+            <p>{s.action}</p>
+            {s.link && (
+              s.link.startsWith('http') ? (
+                <a href={s.link} target="_blank" rel="noopener noreferrer" className="step-link">
+                  Learn More ↗
+                </a>
+              ) : (
+                <Link to={s.link} className="step-link">
+                  Try it Now →
+                </Link>
+              )
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="section-header" style={{ marginTop: '48px' }}>
+        <h2>Election Process Timeline</h2>
+        <p>From announcement to results: The 7-step ECI procedure</p>
+      </div>
+
+      <div className="timeline-container">
+        {ELECTION_TIMELINE.map((t, i) => (
+          <div key={i} className="timeline-item">
+            <div className="timeline-dot" />
+            <div className="timeline-content">
+              <div className="timeline-header">
+                <span className="timeline-phase">{t.phase}</span>
+                <span className="timeline-duration">{t.duration}</span>
+              </div>
+              <p className="timeline-desc">{t.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="section-header" style={{ marginTop: '48px' }}>
+        <h2>Explore Core Features</h2>
       </div>
 
       <div className="features-grid">
@@ -95,5 +144,6 @@ const HomePage = () => {
     </div>
   );
 };
+
 
 export default HomePage;
