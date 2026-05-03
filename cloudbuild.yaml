@@ -20,6 +20,8 @@ steps:
       - 'build'
       - '--build-arg'
       - 'VITE_GEMINI_API_KEY=${_VITE_GEMINI_API_KEY}'
+      - '--build-arg'
+      - 'VITE_GOOGLE_MAPS_API_KEY=${_VITE_GOOGLE_MAPS_API_KEY}'
       - '-t'
       - 'gcr.io/$PROJECT_ID/chunav-saarthi:$COMMIT_SHA'
       - '.'
