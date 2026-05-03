@@ -1,5 +1,5 @@
 steps:
-  # Build the Docker image with the API key
+  # Build the Docker image with the API key baked in
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -33,5 +33,5 @@ steps:
 images:
   - 'gcr.io/$PROJECT_ID/chunav-saarthi:$COMMIT_SHA'
 
-substitutions:
-  _VITE_GEMINI_API_KEY: ''
+options:
+  logging: CLOUD_LOGGING_ONLY
